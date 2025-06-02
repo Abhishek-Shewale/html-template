@@ -1,0 +1,1549 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Plant Identifier Playbook</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary-green: #2d5016;
+        --secondary-green: #4a7c59;
+        --accent-green: #68b684;
+        --light-green: #a7d7c5;
+        --bg-light: #f8fffe;
+        --text-dark: #2c3e50;
+        --gradient-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: var(--bg-light);
+        color: var(--text-dark);
+        line-height: 1.6;
+      }
+
+      .hero-section {
+        background: linear-gradient(
+          135deg,
+          var(--primary-green) 0%,
+          var(--secondary-green) 100%
+        );
+        color: white;
+        padding: 60px 0;
+        margin-bottom: 40px;
+        position: relative;
+        overflow: hidden;
+        margin-left: 0;
+      }
+
+      .hero-section::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="plant" patternUnits="userSpaceOnUse" width="20" height="20"><circle cx="10" cy="10" r="2" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23plant)"/></svg>');
+        opacity: 0.3;
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 2;
+      }
+
+      .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 280px;
+        height: 100vh;
+        overflow-y: auto;
+        background: white;
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        z-index: 1000;
+      }
+
+      .sidebar::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      .sidebar::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 3px;
+      }
+
+      .sidebar::-webkit-scrollbar-thumb {
+        background: var(--accent-green);
+        border-radius: 3px;
+      }
+
+      .sidebar h4 {
+        color: var(--primary-green);
+        font-weight: 600;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid var(--light-green);
+        font-size: 1.1rem;
+      }
+
+      .sidebar .nav-link {
+        color: var(--text-dark);
+        padding: 8px 12px;
+        border-radius: 6px;
+        transition: all 0.3s ease;
+        margin-bottom: 3px;
+        font-size: 0.85rem;
+        text-decoration: none;
+        display: block;
+      }
+
+      .sidebar .nav-link:hover {
+        background-color: var(--light-green);
+        color: var(--primary-green);
+        transform: translateX(3px);
+      }
+
+      .sidebar .nav-link.active {
+        background-color: var(--accent-green);
+        color: white;
+      }
+
+      .main-content-wrapper {
+        margin-left: 280px;
+      }
+
+      .main-content {
+        padding: 20px;
+      }
+
+      .section {
+        margin-bottom: 50px;
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        transition: transform 0.3s ease;
+      }
+
+      .section:hover {
+        transform: translateY(-2px);
+      }
+
+      .section h2 {
+        color: var(--primary-green);
+        font-weight: 600;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .section h2::before {
+        content: "🌱";
+        font-size: 1.2em;
+      }
+
+      .section h1 {
+        background: linear-gradient(
+          135deg,
+          var(--primary-green),
+          var(--accent-green)
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-weight: 700;
+        margin-bottom: 30px;
+      }
+
+      pre {
+        background: linear-gradient(135deg, #f8f9ff 0%, #f0f4f7 100%);
+        padding: 20px;
+        border-radius: 10px;
+        border-left: 4px solid var(--accent-green);
+        font-size: 0.9rem;
+        overflow-x: auto;
+      }
+
+      code {
+        background: var(--light-green);
+        color: var(--primary-green);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 0.9em;
+      }
+
+      .step-card {
+        background: linear-gradient(135deg, #fff 0%, #f8fffe 100%);
+        border: 1px solid var(--light-green);
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 15px;
+        transition: all 0.3s ease;
+      }
+
+      .step-card:hover {
+        border-color: var(--accent-green);
+        box-shadow: 0 5px 15px rgba(104, 182, 132, 0.2);
+      }
+
+      .step-number {
+        background: linear-gradient(
+          135deg,
+          var(--primary-green),
+          var(--accent-green)
+        );
+        color: white;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        margin-right: 15px;
+        font-size: 0.9rem;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      th,
+      td {
+        border: none;
+        padding: 15px;
+        text-align: left;
+      }
+
+      th {
+        background: linear-gradient(
+          135deg,
+          var(--primary-green),
+          var(--secondary-green)
+        );
+        color: white;
+        font-weight: 600;
+      }
+
+      td {
+        background: white;
+        border-bottom: 1px solid #eee;
+      }
+
+      tr:hover td {
+        background-color: var(--bg-light);
+      }
+
+      .feature-card {
+        background: white;
+        border-radius: 12px;
+        padding: 25px;
+        text-align: center;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        height: 100%;
+      }
+
+      .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      }
+
+      .feature-icon {
+        font-size: 3rem;
+        color: var(--accent-green);
+        margin-bottom: 20px;
+      }
+
+      .accordion-button {
+        background: linear-gradient(135deg, #fff 0%, var(--bg-light) 100%);
+        border: none;
+        font-weight: 600;
+        color: var(--primary-green);
+      }
+
+      .accordion-button:not(.collapsed) {
+        background: linear-gradient(
+          135deg,
+          var(--light-green) 0%,
+          var(--accent-green) 100%
+        );
+        color: white;
+      }
+
+      .progress-badge {
+        display: inline-block;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-transform: uppercase;
+      }
+
+      .badge-not-started {
+        background: #ffeaa7;
+        color: #d63031;
+      }
+
+      .badge-in-progress {
+        background: #74b9ff;
+        color: white;
+      }
+
+      .badge-completed {
+        background: #00b894;
+        color: white;
+      }
+
+      .timeline-item {
+        border-left: 3px solid var(--accent-green);
+        padding-left: 20px;
+        margin-bottom: 20px;
+        position: relative;
+      }
+
+      .timeline-item::before {
+        content: "";
+        position: absolute;
+        left: -8px;
+        top: 5px;
+        width: 13px;
+        height: 13px;
+        border-radius: 50%;
+        background: var(--accent-green);
+      }
+
+      @media (max-width: 768px) {
+        .sidebar {
+          position: relative;
+          width: 100%;
+          height: auto;
+          margin-bottom: 20px;
+        }
+        .main-content-wrapper {
+          margin-left: 0;
+        }
+        .hero-section {
+          padding: 40px 0;
+        }
+        .section {
+          padding: 20px;
+        }
+      }
+
+      .btn-custom {
+        background: linear-gradient(
+          135deg,
+          var(--primary-green),
+          var(--accent-green)
+        );
+        border: none;
+        color: white;
+        padding: 12px 25px;
+        border-radius: 25px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+
+      .btn-custom:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(45, 80, 22, 0.3);
+        color: white;
+      }
+
+      .highlight-box {
+        background: linear-gradient(
+          135deg,
+          var(--light-green) 0%,
+          rgba(167, 215, 197, 0.3) 100%
+        );
+        border-left: 4px solid var(--accent-green);
+        padding: 20px;
+        border-radius: 8px;
+        margin: 20px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Sidebar -->
+    <nav class="sidebar">
+      <h4><i class="fas fa-list-ul me-2"></i>Navigation</h4>
+      <ul class="nav flex-column">
+        <li class="nav-item">
+          <a class="nav-link" href="#overview"
+            ><i class="fas fa-info-circle me-2"></i>Project Overview</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#audience"
+            ><i class="fas fa-users me-2"></i>Target Audience</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#two-minute"
+            ><i class="fas fa-clock me-2"></i>2-Minute Explanation</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#value"
+            ><i class="fas fa-gem me-2"></i>Value Proposition</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#users"
+            ><i class="fas fa-user-friends me-2"></i>Who Can Use This</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#outcomes"
+            ><i class="fas fa-graduation-cap me-2"></i>Learning Outcomes</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#steps"
+            ><i class="fas fa-tasks me-2"></i>Implementation Guide</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#prerequisites"
+            ><i class="fas fa-cog me-2"></i>Prerequisites</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#courses"
+            ><i class="fas fa-book me-2"></i>Recommended Courses</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#knowledge"
+            ><i class="fas fa-brain me-2"></i>Minimum Knowledge</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#faqs"
+            ><i class="fas fa-question-circle me-2"></i>FAQs</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#milestones"
+            ><i class="fas fa-flag-checkered me-2"></i>Milestones</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#timeline"
+            ><i class="fas fa-calendar-alt me-2"></i>Timeline</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#tracking"
+            ><i class="fas fa-chart-line me-2"></i>Progress Tracking</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#tips"
+            ><i class="fas fa-lightbulb me-2"></i>Pro Tips</a
+          >
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Main Content Wrapper -->
+    <div class="main-content-wrapper">
+      <!-- Hero Section -->
+      <div class="hero-section">
+        <div class="container hero-content">
+          <div class="row align-items-center">
+            <div class="col-lg-8">
+              <h1 class="display-4 fw-bold mb-4">
+                🌿 Plant Identifier Playbook
+              </h1>
+              <p class="lead mb-4">
+                Master AI-powered plant identification with computer vision and
+                machine learning. Build, deploy, and showcase your skills with
+                this comprehensive project guide.
+              </p>
+              <button class="btn btn-custom btn-lg">
+                <i class="fas fa-rocket me-2"></i>Start Your Journey
+              </button>
+            </div>
+            <div class="col-lg-4 text-center">
+              <div
+                class="feature-icon"
+                style="font-size: 8rem; color: rgba(255, 255, 255, 0.8)"
+              >
+                🌱
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <div class="container">
+          <div class="section" id="overview">
+            <h2><i class="fas fa-seedling me-2"></i>Project Overview</h2>
+            <div class="highlight-box">
+              <h4>🎯 What You'll Build</h4>
+              <p>
+                The Plant Identifier is an AI-powered application that
+                identifies plant species from images using computer vision and
+                machine learning. Users upload an image via a web or mobile app,
+                and the system predicts the species with a confidence score.
+                This project is relevant in AI due to its application in
+                computer vision, supporting education, agriculture, and
+                conservation.
+              </p>
+            </div>
+
+            <div class="row mt-4">
+              <div class="col-md-4">
+                <div class="feature-card">
+                  <div class="feature-icon">🤖</div>
+                  <h5>AI-Powered</h5>
+                  <p>
+                    Uses advanced CNN models for accurate plant identification
+                  </p>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="feature-card">
+                  <div class="feature-icon">📱</div>
+                  <h5>User-Friendly</h5>
+                  <p>Simple web interface for easy image upload and results</p>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="feature-card">
+                  <div class="feature-icon">🌍</div>
+                  <h5>Impactful</h5>
+                  <p>
+                    Supports education, agriculture, and conservation efforts
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="section" id="audience">
+            <h2>Target Audience</h2>
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <div class="feature-card">
+                  <div class="feature-icon">🎓</div>
+                  <h5>Students</h5>
+                  <p>
+                    Beginners in AI/computer science learning machine learning
+                    and computer vision
+                  </p>
+                </div>
+              </div>
+              <div class="col-md-4 mb-3">
+                <div class="feature-card">
+                  <div class="feature-icon">💻</div>
+                  <h5>Developers</h5>
+                  <p>
+                    Programmers building practical AI applications with Python
+                  </p>
+                </div>
+              </div>
+              <div class="col-md-4 mb-3">
+                <div class="feature-card">
+                  <div class="feature-icon">🏢</div>
+                  <h5>IT Professionals</h5>
+                  <p>Professionals upskilling in AI for deployable solutions</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="section" id="two-minute">
+            <h2>Two-Minute Project Explanation</h2>
+            <div class="highlight-box">
+              <h4>🎤 Your Elevator Pitch</h4>
+              <p>
+                <strong>Script</strong>: "Hi, I'm excited to present my Plant
+                Identifier project, an AI app that identifies plant species from
+                photos. Picture snapping a photo of a plant—the app analyzes it
+                and says it's a rose with 95% confidence. I used a pre-trained
+                CNN like MobileNetV2, trained on PlantNet datasets, and built a
+                Flask web app for user interaction. It helps gardeners, farmers,
+                and educators promote plant literacy and sustainability. This
+                project showcases my skills in computer vision, model training,
+                and app deployment!"
+              </p>
+            </div>
+          </div>
+
+          <div class="section" id="value">
+            <h2>Project Value Proposition</h2>
+            <p>
+              The Plant Identifier solves the problem of identifying unknown
+              plants, offering:
+            </p>
+            <div class="row mt-4">
+              <div class="col-md-4 mb-3">
+                <div class="feature-card">
+                  <div class="feature-icon">🌿</div>
+                  <h5>Environmental Education</h5>
+                  <p>Enhances biodiversity awareness and learning</p>
+                </div>
+              </div>
+              <div class="col-md-4 mb-3">
+                <div class="feature-card">
+                  <div class="feature-icon">🚜</div>
+                  <h5>Agricultural Efficiency</h5>
+                  <p>Helps farmers identify crops and weeds quickly</p>
+                </div>
+              </div>
+              <div class="col-md-4 mb-3">
+                <div class="feature-card">
+                  <div class="feature-icon">🌍</div>
+                  <h5>Conservation Support</h5>
+                  <p>Aids in cataloging plant species for research</p>
+                </div>
+              </div>
+            </div>
+            <p class="mt-3">
+              Its accessibility and open-source data make it scalable and
+              impactful.
+            </p>
+          </div>
+
+          <div class="section" id="users">
+            <h2>Who Can Use This Project</h2>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <div class="feature-card">
+                  <div class="feature-icon">🌻</div>
+                  <h5>Gardeners & Hobbyists</h5>
+                  <p>Identify plants for better care and maintenance</p>
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <div class="feature-card">
+                  <div class="feature-icon">🌾</div>
+                  <h5>Farmers</h5>
+                  <p>Detect crops and weeds to optimize farming practices</p>
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <div class="feature-card">
+                  <div class="feature-icon">👨‍🏫</div>
+                  <h5>Educators & Students</h5>
+                  <p>Use for interactive botany education and learning</p>
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <div class="feature-card">
+                  <div class="feature-icon">🔬</div>
+                  <h5>Conservationists</h5>
+                  <p>Monitor plant species for biodiversity research</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="section" id="outcomes">
+            <h2>Learning Outcomes</h2>
+            <div class="row">
+              <div class="col-md-6">
+                <h5>🛠️ Technical Skills</h5>
+                <ul>
+                  <li>Master Python, TensorFlow, OpenCV, and Flask</li>
+                  <li>
+                    Understand CNNs, transfer learning, and image preprocessing
+                  </li>
+                  <li>Build a portfolio-ready project</li>
+                </ul>
+              </div>
+              <div class="col-md-6">
+                <h5>💼 Professional Skills</h5>
+                <ul>
+                  <li>Gain end-to-end project management experience</li>
+                  <li>
+                    Develop problem-solving skills for real-world data
+                    challenges
+                  </li>
+                  <li>Learn deployment and documentation best practices</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="section" id="steps">
+            <h2>Step-by-Step Implementation Guide</h2>
+
+            <div class="step-card">
+              <div class="d-flex align-items-start">
+                <span class="step-number">1</span>
+                <div>
+                  <h5>Setup Environment</h5>
+                  <p>
+                    Install Python 3.8+: <code>pip install python</code><br />
+                    Create virtual environment: <code>python -m venv env</code
+                    ><br />
+                    Install libraries:
+                    <code
+                      >pip install tensorflow keras opencv-python numpy pandas
+                      flask</code
+                    >
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="step-card">
+              <div class="d-flex align-items-start">
+                <span class="step-number">2</span>
+                <div>
+                  <h5>Collect Data</h5>
+                  <p>
+                    Source 500+ images from PlantNet or Kaggle<br />
+                    Organize into folders: <code>/dataset/rose/</code>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="step-card">
+              <div class="d-flex align-items-start">
+                <span class="step-number">3</span>
+                <div>
+                  <h5>Preprocess Data</h5>
+                  <p>
+                    Resize images to 224x224: <code>cv2.resize()</code><br />
+                    Augment data: <code>tensorflow.keras.preprocessing</code
+                    ><br />
+                    Split: 70% train, 20% validation, 10% test
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="step-card">
+              <div class="d-flex align-items-start">
+                <span class="step-number">4</span>
+                <div>
+                  <h5>Train Model</h5>
+                  <p>
+                    Use MobileNetV2:
+                    <code>tensorflow.keras.applications.MobileNetV2</code><br />
+                    Train for 10–20 epochs
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="step-card">
+              <div class="d-flex align-items-start">
+                <span class="step-number">5</span>
+                <div>
+                  <h5>Evaluate Model</h5>
+                  <p>
+                    Test for 80%+ accuracy<br />
+                    Use confusion matrix:
+                    <code>sklearn.metrics.confusion_matrix</code><br />
+                    Save model: <code>model.save('plant_identifier.h5')</code>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="step-card">
+              <div class="d-flex align-items-start">
+                <span class="step-number">6</span>
+                <div>
+                  <h5>Build UI</h5>
+                  <p>
+                    Create Flask app: <code>app.py</code><br />
+                    Display species and confidence scores
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="step-card">
+              <div class="d-flex align-items-start">
+                <span class="step-number">7</span>
+                <div>
+                  <h5>Test and Debug</h5>
+                  <p>
+                    Test with diverse images<br />
+                    Optimize with quantization
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="step-card">
+              <div class="d-flex align-items-start">
+                <span class="step-number">8</span>
+                <div>
+                  <h5>Deploy</h5>
+                  <p>
+                    Deploy on Heroku: <code>heroku create</code><br />
+                    Optionally, use TensorFlow Lite for mobile
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="step-card">
+              <div class="d-flex align-items-start">
+                <span class="step-number">9</span>
+                <div>
+                  <h5>Document and Present</h5>
+                  <p>
+                    Write comprehensive report<br />
+                    Create demo presentation<br />
+                    Share on GitHub with documentation
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="section" id="prerequisites">
+            <h2>Prerequisites</h2>
+            <div class="row">
+              <div class="col-md-6">
+                <h5>🖥️ Hardware Requirements</h5>
+                <ul>
+                  <li>8GB+ RAM minimum</li>
+                  <li>CPU (GPU optional but recommended)</li>
+                  <li>Stable internet connection</li>
+                  <li>At least 5GB free storage</li>
+                </ul>
+              </div>
+              <div class="col-md-6">
+                <h5>💾 Software Requirements</h5>
+                <ul>
+                  <li>Python 3.8+ installed</li>
+                  <li>Git for version control</li>
+                  <li>Code editor (VS Code recommended)</li>
+                  <li>Web browser for testing</li>
+                </ul>
+              </div>
+            </div>
+            <div class="highlight-box mt-3">
+              <h5>📚 Dataset Sources</h5>
+              <p>
+                Labeled plant images from PlantNet, Kaggle, or similar botanical
+                datasets. Start with at least 500 images across 5-10 common
+                plant species.
+              </p>
+            </div>
+          </div>
+
+          <div class="section" id="courses">
+            <h2>Recommended Courses</h2>
+            <div class="timeline-item">
+              <h5>1. Python for Everybody (Coursera)</h5>
+              <p>
+                Master Python basics - variables, functions, and data structures
+              </p>
+              <a
+                href="https://www.coursera.org/specializations/python"
+                class="btn btn-sm btn-custom"
+                >View Course</a
+              >
+            </div>
+            <div class="timeline-item">
+              <h5>2. Machine Learning by Andrew Ng (Coursera)</h5>
+              <p>Understanding classification algorithms and fundamentals</p>
+              <a
+                href="https://www.coursera.org/learn/machine-learning"
+                class="btn btn-sm btn-custom"
+                >View Course</a
+              >
+            </div>
+            <div class="timeline-item">
+              <h5>3. Deep Learning Specialization - CNNs (Coursera)</h5>
+              <p>Computer vision, CNNs, and transfer learning techniques</p>
+              <a
+                href="https://www.coursera.org/specializations/deep-learning"
+                class="btn btn-sm btn-custom"
+                >View Course</a
+              >
+            </div>
+            <div class="timeline-item">
+              <h5>4. Python and Flask Bootcamp (Udemy)</h5>
+              <p>Web application development and deployment</p>
+              <a
+                href="https://www.udemy.com/course/python-and-flask-bootcamp/"
+                class="btn btn-sm btn-custom"
+                >View Course</a
+              >
+            </div>
+            <div class="timeline-item">
+              <h5>5. TensorFlow Developer Certificate (Coursera)</h5>
+              <p>Advanced TensorFlow skills for production applications</p>
+              <a
+                href="https://www.coursera.org/professional-certificates/tensorflow-in-practice"
+                class="btn btn-sm btn-custom"
+                >View Course</a
+              >
+            </div>
+          </div>
+
+          <div class="section" id="knowledge">
+            <h2>Minimum Knowledge Required</h2>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="feature-card">
+                  <div class="feature-icon">🐍</div>
+                  <h5>Programming</h5>
+                  <p>
+                    Python basics including variables, functions, loops, and
+                    basic data structures
+                  </p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="feature-card">
+                  <div class="feature-icon">🤖</div>
+                  <h5>Machine Learning</h5>
+                  <p>
+                    Understanding of supervised learning and classification
+                    concepts
+                  </p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="feature-card">
+                  <div class="feature-icon">👁️</div>
+                  <h5>Computer Vision</h5>
+                  <p>Basic image processing concepts and CNN fundamentals</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="feature-card">
+                  <div class="feature-icon">🌐</div>
+                  <h5>Web Development</h5>
+                  <p>Basic HTML/CSS knowledge and Flask file handling</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="feature-card">
+                  <div class="feature-icon">📊</div>
+                  <h5>Mathematics</h5>
+                  <p>Linear algebra basics and fundamental statistics</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="feature-card">
+                  <div class="feature-icon">⚙️</div>
+                  <h5>Tools</h5>
+                  <p>Command line basics and Git version control</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="section" id="faqs">
+            <h2>Frequently Asked Questions</h2>
+            <div class="accordion" id="faqAccordion">
+              <div class="accordion-item">
+                <h3 class="accordion-header">
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#faq1"
+                  >
+                    <i class="fas fa-question-circle me-2"></i>What is the Plant
+                    Identifier?
+                  </button>
+                </h3>
+                <div
+                  id="faq1"
+                  class="accordion-collapse collapse"
+                  data-bs-parent="#faqAccordion"
+                >
+                  <div class="accordion-body">
+                    An AI-powered application that identifies plant species from
+                    images using a Convolutional Neural Network (CNN). It
+                    combines computer vision with machine learning to provide
+                    accurate plant identification with confidence scores.
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h3 class="accordion-header">
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#faq2"
+                  >
+                    <i class="fas fa-desktop me-2"></i>Do I need a GPU for this
+                    project?
+                  </button>
+                </h3>
+                <div
+                  id="faq2"
+                  class="accordion-collapse collapse"
+                  data-bs-parent="#faqAccordion"
+                >
+                  <div class="accordion-body">
+                    No, a CPU works fine for this project, but a GPU
+                    significantly speeds up training. You can use free GPU
+                    resources like Google Colab or Kaggle Notebooks for faster
+                    model training.
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h3 class="accordion-header">
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#faq3"
+                  >
+                    <i class="fas fa-clock me-2"></i>How long does it take to
+                    complete?
+                  </button>
+                </h3>
+                <div
+                  id="faq3"
+                  class="accordion-collapse collapse"
+                  data-bs-parent="#faqAccordion"
+                >
+                  <div class="accordion-body">
+                    The project typically takes 6-8 weeks working 5-10 hours per
+                    week. Beginners may need 8 weeks, while experienced
+                    developers can complete it in 4-6 weeks.
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h3 class="accordion-header">
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#faq4"
+                  >
+                    <i class="fas fa-database me-2"></i>Where can I get plant
+                    image datasets?
+                  </button>
+                </h3>
+                <div
+                  id="faq4"
+                  class="accordion-collapse collapse"
+                  data-bs-parent="#faqAccordion"
+                >
+                  <div class="accordion-body">
+                    Popular sources include PlantNet, Kaggle plant datasets,
+                    iNaturalist, and PlantCLEF. Start with at least 500 images
+                    across 5-10 common plant species for better model
+                    performance.
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h3 class="accordion-header">
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#faq5"
+                  >
+                    <i class="fas fa-chart-line me-2"></i>What accuracy can I
+                    expect?
+                  </button>
+                </h3>
+                <div
+                  id="faq5"
+                  class="accordion-collapse collapse"
+                  data-bs-parent="#faqAccordion"
+                >
+                  <div class="accordion-body">
+                    With proper preprocessing and MobileNetV2 transfer learning,
+                    you can achieve 80-90% accuracy. The exact accuracy depends
+                    on dataset quality, number of classes, and training
+                    parameters.
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h3 class="accordion-header">
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#faq6"
+                  >
+                    <i class="fas fa-mobile-alt me-2"></i>Can I deploy this as a
+                    mobile app?
+                  </button>
+                </h3>
+                <div
+                  id="faq6"
+                  class="accordion-collapse collapse"
+                  data-bs-parent="#faqAccordion"
+                >
+                  <div class="accordion-body">
+                    Yes! You can convert your model to TensorFlow Lite and
+                    integrate it into Android/iOS apps, or create a Progressive
+                    Web App (PWA) for mobile-friendly web access.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="section" id="milestones">
+            <h2>Project Milestones</h2>
+            <div class="timeline-item">
+              <h5>📅 Week 1-2: Setup and Data Collection</h5>
+              <p>
+                Install all required libraries, set up development environment,
+                and source 500+ high-quality plant images from reliable
+                datasets.
+              </p>
+              <div class="mt-2">
+                <span class="progress-badge badge-not-started"
+                  >Setup Phase</span
+                >
+              </div>
+            </div>
+            <div class="timeline-item">
+              <h5>📅 Week 3: Data Preprocessing</h5>
+              <p>
+                Resize images to standard dimensions, apply data augmentation
+                techniques, and split dataset into training, validation, and
+                test sets.
+              </p>
+              <div class="mt-2">
+                <span class="progress-badge badge-not-started">Data Phase</span>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <h5>📅 Week 4-5: Model Training</h5>
+              <p>
+                Implement MobileNetV2 transfer learning, train the model, and
+                achieve target accuracy of 80%+ through hyperparameter tuning.
+              </p>
+              <div class="mt-2">
+                <span class="progress-badge badge-not-started"
+                  >Training Phase</span
+                >
+              </div>
+            </div>
+            <div class="timeline-item">
+              <h5>📅 Week 6: UI Development</h5>
+              <p>
+                Build Flask web application with image upload functionality,
+                prediction display, and confidence scoring interface.
+              </p>
+              <div class="mt-2">
+                <span class="progress-badge badge-not-started"
+                  >Development Phase</span
+                >
+              </div>
+            </div>
+            <div class="timeline-item">
+              <h5>📅 Week 7: Testing and Debugging</h5>
+              <p>
+                Comprehensive testing with diverse plant images, performance
+                optimization, and bug fixes for production readiness.
+              </p>
+              <div class="mt-2">
+                <span class="progress-badge badge-not-started"
+                  >Testing Phase</span
+                >
+              </div>
+            </div>
+            <div class="timeline-item">
+              <h5>📅 Week 8: Deployment and Documentation</h5>
+              <p>
+                Deploy application to cloud platform, write comprehensive
+                documentation, and create presentation materials.
+              </p>
+              <div class="mt-2">
+                <span class="progress-badge badge-not-started"
+                  >Deployment Phase</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="section" id="timeline">
+            <h2>Timeline Overview</h2>
+            <div class="highlight-box">
+              <h4>⏰ Total Duration: 6–8 weeks (5–10 hours/week)</h4>
+              <div class="row mt-3">
+                <div class="col-md-4">
+                  <div class="feature-card">
+                    <div class="feature-icon">🌱</div>
+                    <h5>Beginners</h5>
+                    <p>
+                      <strong>8 weeks</strong><br />Need time to learn Python/ML
+                      fundamentals
+                    </p>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="feature-card">
+                    <div class="feature-icon">🌿</div>
+                    <h5>Intermediate</h5>
+                    <p>
+                      <strong>6-7 weeks</strong><br />Know programming basics,
+                      learning AI
+                    </p>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="feature-card">
+                    <div class="feature-icon">🌳</div>
+                    <h5>Advanced</h5>
+                    <p>
+                      <strong>4-6 weeks</strong><br />Skip learning phase, focus
+                      on implementation
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="section" id="tracking">
+            <h2>Progress Tracking Template</h2>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th><i class="fas fa-flag me-2"></i>Milestone</th>
+                    <th><i class="fas fa-tasks me-2"></i>Key Tasks</th>
+                    <th><i class="fas fa-info-circle me-2"></i>Status</th>
+                    <th><i class="fas fa-calendar-alt me-2"></i>Start Date</th>
+                    <th><i class="fas fa-calendar-check me-2"></i>End Date</th>
+                    <th><i class="fas fa-sticky-note me-2"></i>Notes</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Setup and Data Collection</strong></td>
+                    <td>Install libraries, source dataset</td>
+                    <td>
+                      <span class="progress-badge badge-not-started"
+                        >Not Started</span
+                      >
+                    </td>
+                    <td>
+                      <input type="date" class="form-control form-control-sm" />
+                    </td>
+                    <td>
+                      <input type="date" class="form-control form-control-sm" />
+                    </td>
+                    <td>
+                      <input
+                        type="text"
+                        class="form-control form-control-sm"
+                        placeholder="Add notes..."
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>Data Preprocessing</strong></td>
+                    <td>Resize, augment, split dataset</td>
+                    <td>
+                      <span class="progress-badge badge-not-started"
+                        >Not Started</span
+                      >
+                    </td>
+                    <td>
+                      <input type="date" class="form-control form-control-sm" />
+                    </td>
+                    <td>
+                      <input type="date" class="form-control form-control-sm" />
+                    </td>
+                    <td>
+                      <input
+                        type="text"
+                        class="form-control form-control-sm"
+                        placeholder="Add notes..."
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>Model Training</strong></td>
+                    <td>Train model, hyperparameter tuning</td>
+                    <td>
+                      <span class="progress-badge badge-not-started"
+                        >Not Started</span
+                      >
+                    </td>
+                    <td>
+                      <input type="date" class="form-control form-control-sm" />
+                    </td>
+                    <td>
+                      <input type="date" class="form-control form-control-sm" />
+                    </td>
+                    <td>
+                      <input
+                        type="text"
+                        class="form-control form-control-sm"
+                        placeholder="Add notes..."
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>UI Development</strong></td>
+                    <td>Build Flask web application</td>
+                    <td>
+                      <span class="progress-badge badge-not-started"
+                        >Not Started</span
+                      >
+                    </td>
+                    <td>
+                      <input type="date" class="form-control form-control-sm" />
+                    </td>
+                    <td>
+                      <input type="date" class="form-control form-control-sm" />
+                    </td>
+                    <td>
+                      <input
+                        type="text"
+                        class="form-control form-control-sm"
+                        placeholder="Add notes..."
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>Testing and Debugging</strong></td>
+                    <td>Test model and UI thoroughly</td>
+                    <td>
+                      <span class="progress-badge badge-not-started"
+                        >Not Started</span
+                      >
+                    </td>
+                    <td>
+                      <input type="date" class="form-control form-control-sm" />
+                    </td>
+                    <td>
+                      <input type="date" class="form-control form-control-sm" />
+                    </td>
+                    <td>
+                      <input
+                        type="text"
+                        class="form-control form-control-sm"
+                        placeholder="Add notes..."
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>Deployment and Documentation</strong></td>
+                    <td>Deploy app, write comprehensive report</td>
+                    <td>
+                      <span class="progress-badge badge-not-started"
+                        >Not Started</span
+                      >
+                    </td>
+                    <td>
+                      <input type="date" class="form-control form-control-sm" />
+                    </td>
+                    <td>
+                      <input type="date" class="form-control form-control-sm" />
+                    </td>
+                    <td>
+                      <input
+                        type="text"
+                        class="form-control form-control-sm"
+                        placeholder="Add notes..."
+                      />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="section" id="tips">
+            <h2>Pro Tips for Fast Completion</h2>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="feature-card">
+                  <div class="feature-icon">⚡</div>
+                  <h5>Quick Start Tips</h5>
+                  <ul class="text-start">
+                    <li>Use MobileNetV2 for faster training</li>
+                    <li>Start with small dataset (500 images)</li>
+                    <li>Use Google Colab for free GPUs</li>
+                    <li>Leverage Flask templates for UI</li>
+                    <li>Automate preprocessing with scripts</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="feature-card">
+                  <div class="feature-icon">🎯</div>
+                  <h5>Efficiency Hacks</h5>
+                  <ul class="text-start">
+                    <li>Test model early to catch issues</li>
+                    <li>Follow TensorFlow official tutorials</li>
+                    <li>Collaborate to divide tasks</li>
+                    <li>Document progress incrementally</li>
+                    <li>Use Git for version control</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="highlight-box mt-4">
+              <h4>🚀 Success Checklist</h4>
+              <div class="row">
+                <div class="col-md-4">
+                  <h6>Before You Start:</h6>
+                  <ul>
+                    <li>✅ Python 3.8+ installed</li>
+                    <li>✅ Virtual environment ready</li>
+                    <li>✅ Dataset sources identified</li>
+                    <li>✅ Development plan created</li>
+                  </ul>
+                </div>
+                <div class="col-md-4">
+                  <h6>During Development:</h6>
+                  <ul>
+                    <li>✅ Regular code commits</li>
+                    <li>✅ Test frequently</li>
+                    <li>✅ Monitor model performance</li>
+                    <li>✅ Document challenges</li>
+                  </ul>
+                </div>
+                <div class="col-md-4">
+                  <h6>Before Deployment:</h6>
+                  <ul>
+                    <li>✅ 80%+ model accuracy</li>
+                    <li>✅ Working web interface</li>
+                    <li>✅ Comprehensive testing</li>
+                    <li>✅ Documentation complete</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Footer -->
+          <div class="section">
+            <div class="text-center">
+              <h3>🌟 Ready to Start Your Plant Identifier Journey?</h3>
+              <p class="lead">
+                Transform your AI skills with this hands-on project that
+                combines computer vision, machine learning, and web development.
+              </p>
+              <button class="btn btn-custom btn-lg me-3">
+                <i class="fas fa-download me-2"></i>Download Project Template
+              </button>
+              <button class="btn btn-outline-success btn-lg">
+                <i class="fas fa-github me-2"></i>View on GitHub
+              </button>
+
+              <div class="mt-4">
+                <p class="text-muted">
+                  <i class="fas fa-heart text-danger me-2"></i>
+                  Created with love for the AI learning community
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // Smooth scrolling for navigation links
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute("href"));
+          if (target) {
+            target.scrollIntoView({
+              behavior: "smooth",
+              block: "start",
+            });
+          }
+        });
+      });
+
+      // Highlight active navigation item
+      window.addEventListener("scroll", () => {
+        let current = "";
+        const sections = document.querySelectorAll(".section");
+
+        sections.forEach((section) => {
+          const sectionTop = section.offsetTop;
+          const sectionHeight = section.clientHeight;
+          if (scrollY >= sectionTop - 200) {
+            current = section.getAttribute("id");
+          }
+        });
+
+        document.querySelectorAll(".nav-link").forEach((link) => {
+          link.classList.remove("active");
+          if (link.getAttribute("href") === `#${current}`) {
+            link.classList.add("active");
+          }
+        });
+      });
+
+      // Add click handlers for progress badges
+      document.querySelectorAll(".progress-badge").forEach((badge) => {
+        badge.addEventListener("click", function () {
+          const currentClass = this.className;
+          if (currentClass.includes("badge-not-started")) {
+            this.className = "progress-badge badge-in-progress";
+            this.textContent = "In Progress";
+          } else if (currentClass.includes("badge-in-progress")) {
+            this.className = "progress-badge badge-completed";
+            this.textContent = "Completed";
+          } else {
+            this.className = "progress-badge badge-not-started";
+            this.textContent = "Not Started";
+          }
+        });
+      });
+
+      // Add animation on scroll
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: "0px 0px -50px 0px",
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll(".section").forEach((section) => {
+        section.style.opacity = "0";
+        section.style.transform = "translateY(20px)";
+        section.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        observer.observe(section);
+      });
+    </script>
+  </body>
+</html>
