@@ -3,1547 +3,1758 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Plant Identifier Playbook</title>
+    <title>Student AI</title>
     <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
       rel="stylesheet"
     />
     <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
       rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
+
     <style>
-      :root {
-        --primary-green: #2d5016;
-        --secondary-green: #4a7c59;
-        --accent-green: #68b684;
-        --light-green: #a7d7c5;
-        --bg-light: #f8fffe;
-        --text-dark: #2c3e50;
-        --gradient-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      .bg-primary-gradient {
+        background: linear-gradient(135deg, #6f42c1, #e03bab);
+      }
+      .bg-secondary-gradient {
+        background: linear-gradient(135deg, #a855f7, #ff4694);
+      }
+      .bg-accent-gradient {
+        background: linear-gradient(135deg, #b721ff, #fbd786);
       }
 
-      body {
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        background-color: var(--bg-light);
-        color: var(--text-dark);
-        line-height: 1.6;
+      /* Custom styles for mobile feature cards */
+      @media (max-width: 767px) {
+        .mobile-hidden {
+          display: none;
+        }
+        .mobile-hidden.show-all {
+          display: block;
+          animation: fadeInUp 0.5s ease-out;
+        }
       }
 
-      .hero-section {
-        background: linear-gradient(
-          135deg,
-          var(--primary-green) 0%,
-          var(--secondary-green) 100%
-        );
-        color: white;
-        padding: 60px 0;
-        margin-bottom: 40px;
-        position: relative;
-        overflow: hidden;
-        margin-left: 0;
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
 
-      .hero-section::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="plant" patternUnits="userSpaceOnUse" width="20" height="20"><circle cx="10" cy="10" r="2" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23plant)"/></svg>');
-        opacity: 0.3;
+      .see-more-btn {
+        background: linear-gradient(135deg, #8b5cf6, #ec4899);
       }
 
-      .hero-content {
-        position: relative;
-        z-index: 2;
-      }
-
-      .sidebar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 280px;
-        height: 100vh;
-        overflow-y: auto;
-        background: white;
-        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
-        padding: 20px;
-        z-index: 1000;
-      }
-
-      .sidebar::-webkit-scrollbar {
-        width: 6px;
-      }
-
-      .sidebar::-webkit-scrollbar-track {
-        background: #f1f1f1;
-        border-radius: 3px;
-      }
-
-      .sidebar::-webkit-scrollbar-thumb {
-        background: var(--accent-green);
-        border-radius: 3px;
-      }
-
-      .sidebar h4 {
-        color: var(--primary-green);
-        font-weight: 600;
-        margin-bottom: 20px;
-        padding-bottom: 10px;
-        border-bottom: 2px solid var(--light-green);
-        font-size: 1.1rem;
-      }
-
-      .sidebar .nav-link {
-        color: var(--text-dark);
-        padding: 8px 12px;
-        border-radius: 6px;
-        transition: all 0.3s ease;
-        margin-bottom: 3px;
-        font-size: 0.85rem;
-        text-decoration: none;
-        display: block;
-      }
-
-      .sidebar .nav-link:hover {
-        background-color: var(--light-green);
-        color: var(--primary-green);
-        transform: translateX(3px);
-      }
-
-      .sidebar .nav-link.active {
-        background-color: var(--accent-green);
-        color: white;
-      }
-
-      .main-content-wrapper {
-        margin-left: 280px;
-      }
-
-      .main-content {
-        padding: 20px;
-      }
-
-      .section {
-        margin-bottom: 50px;
-        background: white;
-        padding: 30px;
-        border-radius: 15px;
-        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+      .icon-container {
         transition: transform 0.3s ease;
       }
 
-      .section:hover {
-        transform: translateY(-2px);
+      .feature-card:hover .icon-container {
+        transform: scale(1.1);
       }
 
-      .section h2 {
-        color: var(--primary-green);
-        font-weight: 600;
-        margin-bottom: 20px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
+      /* Mobile menu animation */
+      .mobile-menu-enter {
+        animation: slideDown 0.3s ease-out;
       }
 
-      .section h2::before {
-        content: "🌱";
-        font-size: 1.2em;
+      .mobile-menu-exit {
+        animation: slideUp 0.3s ease-out;
       }
 
-      .section h1 {
-        background: linear-gradient(
-          135deg,
-          var(--primary-green),
-          var(--accent-green)
-        );
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        font-weight: 700;
-        margin-bottom: 30px;
-      }
-
-      pre {
-        background: linear-gradient(135deg, #f8f9ff 0%, #f0f4f7 100%);
-        padding: 20px;
-        border-radius: 10px;
-        border-left: 4px solid var(--accent-green);
-        font-size: 0.9rem;
-        overflow-x: auto;
-      }
-
-      code {
-        background: var(--light-green);
-        color: var(--primary-green);
-        padding: 2px 6px;
-        border-radius: 4px;
-        font-size: 0.9em;
-      }
-
-      .step-card {
-        background: linear-gradient(135deg, #fff 0%, #f8fffe 100%);
-        border: 1px solid var(--light-green);
-        border-radius: 12px;
-        padding: 20px;
-        margin-bottom: 15px;
-        transition: all 0.3s ease;
-      }
-
-      .step-card:hover {
-        border-color: var(--accent-green);
-        box-shadow: 0 5px 15px rgba(104, 182, 132, 0.2);
-      }
-
-      .step-number {
-        background: linear-gradient(
-          135deg,
-          var(--primary-green),
-          var(--accent-green)
-        );
-        color: white;
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: bold;
-        margin-right: 15px;
-        font-size: 0.9rem;
-      }
-
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        border-radius: 10px;
-        overflow: hidden;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-      }
-
-      th,
-      td {
-        border: none;
-        padding: 15px;
-        text-align: left;
-      }
-
-      th {
-        background: linear-gradient(
-          135deg,
-          var(--primary-green),
-          var(--secondary-green)
-        );
-        color: white;
-        font-weight: 600;
-      }
-
-      td {
-        background: white;
-        border-bottom: 1px solid #eee;
-      }
-
-      tr:hover td {
-        background-color: var(--bg-light);
-      }
-
-      .feature-card {
-        background: white;
-        border-radius: 12px;
-        padding: 25px;
-        text-align: center;
-        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-        transition: all 0.3s ease;
-        height: 100%;
-      }
-
-      .feature-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-      }
-
-      .feature-icon {
-        font-size: 3rem;
-        color: var(--accent-green);
-        margin-bottom: 20px;
-      }
-
-      .accordion-button {
-        background: linear-gradient(135deg, #fff 0%, var(--bg-light) 100%);
-        border: none;
-        font-weight: 600;
-        color: var(--primary-green);
-      }
-
-      .accordion-button:not(.collapsed) {
-        background: linear-gradient(
-          135deg,
-          var(--light-green) 0%,
-          var(--accent-green) 100%
-        );
-        color: white;
-      }
-
-      .progress-badge {
-        display: inline-block;
-        padding: 5px 12px;
-        border-radius: 20px;
-        font-size: 0.8rem;
-        font-weight: 600;
-        text-transform: uppercase;
-      }
-
-      .badge-not-started {
-        background: #ffeaa7;
-        color: #d63031;
-      }
-
-      .badge-in-progress {
-        background: #74b9ff;
-        color: white;
-      }
-
-      .badge-completed {
-        background: #00b894;
-        color: white;
-      }
-
-      .timeline-item {
-        border-left: 3px solid var(--accent-green);
-        padding-left: 20px;
-        margin-bottom: 20px;
-        position: relative;
-      }
-
-      .timeline-item::before {
-        content: "";
-        position: absolute;
-        left: -8px;
-        top: 5px;
-        width: 13px;
-        height: 13px;
-        border-radius: 50%;
-        background: var(--accent-green);
-      }
-
-      @media (max-width: 768px) {
-        .sidebar {
-          position: relative;
-          width: 100%;
-          height: auto;
-          margin-bottom: 20px;
+      @keyframes slideDown {
+        from {
+          opacity: 0;
+          transform: translateY(-10px);
         }
-        .main-content-wrapper {
-          margin-left: 0;
-        }
-        .hero-section {
-          padding: 40px 0;
-        }
-        .section {
-          padding: 20px;
+        to {
+          opacity: 1;
+          transform: translateY(0);
         }
       }
 
-      .btn-custom {
-        background: linear-gradient(
-          135deg,
-          var(--primary-green),
-          var(--accent-green)
-        );
-        border: none;
-        color: white;
-        padding: 12px 25px;
-        border-radius: 25px;
-        font-weight: 600;
-        transition: all 0.3s ease;
-      }
-
-      .btn-custom:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(45, 80, 22, 0.3);
-        color: white;
-      }
-
-      .highlight-box {
-        background: linear-gradient(
-          135deg,
-          var(--light-green) 0%,
-          rgba(167, 215, 197, 0.3) 100%
-        );
-        border-left: 4px solid var(--accent-green);
-        padding: 20px;
-        border-radius: 8px;
-        margin: 20px 0;
+      @keyframes slideUp {
+        from {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        to {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
       }
     </style>
   </head>
-  <body>
-    <!-- Sidebar -->
-    <nav class="sidebar">
-      <h4><i class="fas fa-list-ul me-2"></i>Navigation</h4>
-      <ul class="nav flex-column">
-        <li class="nav-item">
-          <a class="nav-link" href="#overview"
-            ><i class="fas fa-info-circle me-2"></i>Project Overview</a
+  <body
+    class="font-sans antialiased text-gray-900 leading-normal tracking-wider bg-white"
+  >
+    <!-- Navbar -->
+    <nav class="bg-white py-4 shadow-sm sticky top-0 z-50">
+      <div class="max-w-7xl mx-auto px-2 flex items-center justify-between">
+        <!-- Left Side - Logo and Title -->
+        <div class="flex items-center">
+          <div class="bg-white/80 backdrop-blur-sm p-3 rounded-xl mr-4"></div>
+          <div class="text-left">
+            <h1 class="text-xl md:text-2xl font-bold text-gray-900">
+              Student AI
+            </h1>
+            <p class="text-sm text-gray-600">India's First AI USB</p>
+          </div>
+        </div>
+
+        <!-- Right Side - Desktop Buttons (Hidden on Mobile) -->
+        <div class="hidden md:flex items-center space-x-4">
+          <button
+            class="bg-purple-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-purple-700 transition-colors"
           >
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#audience"
-            ><i class="fas fa-users me-2"></i>Target Audience</a
+            Pro-User Login
+          </button>
+          <button
+            class="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg font-medium hover:bg-gray-200 transition-colors"
           >
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#two-minute"
-            ><i class="fas fa-clock me-2"></i>2-Minute Explanation</a
+            Free Plan
+          </button>
+        </div>
+
+        <!-- Right Side - Mobile Hamburger Menu (Hidden on Desktop) -->
+        <div class="md:hidden relative">
+          <button
+            id="mobileMenuButton"
+            class="text-2xl p-2 hover:bg-gray-100 rounded-lg transition-colors"
           >
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#value"
-            ><i class="fas fa-gem me-2"></i>Value Proposition</a
+            ☰
+          </button>
+
+          <!-- Mobile Dropdown Menu (Initially Hidden) -->
+          <div
+            id="mobileDropdownMenu"
+            class="absolute right-0 top-full mt-2 w-40 bg-white border border-gray-200 rounded-lg shadow-lg hidden z-50"
           >
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#users"
-            ><i class="fas fa-user-friends me-2"></i>Who Can Use This</a
-          >
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#outcomes"
-            ><i class="fas fa-graduation-cap me-2"></i>Learning Outcomes</a
-          >
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#steps"
-            ><i class="fas fa-tasks me-2"></i>Implementation Guide</a
-          >
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#prerequisites"
-            ><i class="fas fa-cog me-2"></i>Prerequisites</a
-          >
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#courses"
-            ><i class="fas fa-book me-2"></i>Recommended Courses</a
-          >
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#knowledge"
-            ><i class="fas fa-brain me-2"></i>Minimum Knowledge</a
-          >
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#faqs"
-            ><i class="fas fa-question-circle me-2"></i>FAQs</a
-          >
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#milestones"
-            ><i class="fas fa-flag-checkered me-2"></i>Milestones</a
-          >
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#timeline"
-            ><i class="fas fa-calendar-alt me-2"></i>Timeline</a
-          >
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#tracking"
-            ><i class="fas fa-chart-line me-2"></i>Progress Tracking</a
-          >
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#tips"
-            ><i class="fas fa-lightbulb me-2"></i>Pro Tips</a
-          >
-        </li>
-      </ul>
+            <button
+              class="w-full px-4 py-3 text-left hover:bg-blue-50 rounded-t-lg transition-colors font-medium text-blue-600"
+            >
+              Pro-User Login
+            </button>
+            <button
+              class="w-full px-4 py-3 text-left hover:bg-gray-50 rounded-b-lg transition-colors font-medium text-gray-700"
+            >
+              Free Plan
+            </button>
+          </div>
+        </div>
+      </div>
     </nav>
 
-    <!-- Main Content Wrapper -->
-    <div class="main-content-wrapper">
-      <!-- Hero Section -->
-      <div class="hero-section">
-        <div class="container hero-content">
-          <div class="row align-items-center">
-            <div class="col-lg-8">
-              <h1 class="display-4 fw-bold mb-4">
-                🌿 Plant Identifier Playbook
-              </h1>
-              <p class="lead mb-4">
-                Master AI-powered plant identification with computer vision and
-                machine learning. Build, deploy, and showcase your skills with
-                this comprehensive project guide.
-              </p>
-              <button class="btn btn-custom btn-lg">
-                <i class="fas fa-rocket me-2"></i>Start Your Journey
-              </button>
-            </div>
-            <div class="col-lg-4 text-center">
-              <div
-                class="feature-icon"
-                style="font-size: 8rem; color: rgba(255, 255, 255, 0.8)"
+    <script>
+      // Mobile Menu Toggle
+      document.addEventListener("DOMContentLoaded", function () {
+        const mobileMenuButton = document.getElementById("mobileMenuButton");
+        const mobileDropdownMenu =
+          document.getElementById("mobileDropdownMenu");
+        let isMenuOpen = false;
+
+        mobileMenuButton.addEventListener("click", function (e) {
+          e.stopPropagation();
+
+          if (isMenuOpen) {
+            // Close menu
+            mobileDropdownMenu.classList.add("hidden");
+            isMenuOpen = false;
+          } else {
+            // Open menu
+            mobileDropdownMenu.classList.remove("hidden");
+            isMenuOpen = true;
+          }
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener("click", function (e) {
+          if (isMenuOpen && !mobileDropdownMenu.contains(e.target)) {
+            mobileDropdownMenu.classList.add("hidden");
+            isMenuOpen = false;
+          }
+        });
+      });
+    </script>
+
+    <!-- header -->
+    <header
+      class="relative overflow-hidden"
+      style="
+        background-image: url('https://i.ibb.co/WvPDxbwB/kidba.jpg');
+        background-size: cover;
+        background-position: 55% center;
+      "
+    >
+      <div class="relative max-w-7xl mx-auto px-2 py-8 md:py-28 text-black">
+        <!-- Your content here -->
+        <h2
+          class="text-2xl md:text-3xl font-bold mb-4 leading-relaxed text-left"
+        >
+          Transform Your Child's Learning Journey with AI
+        </h2>
+        <p class="text-xl mb-8 opacity-90 max-w-3xl leading-relaxed text-left">
+          ✨ Finish Homework 5x Faster | 🚀 Works 100% Offline | 📚 Covers Class
+          4–12 | 🎯 Board-Aligned Content
+        </p>
+        <div class="flex flex-col sm:flex-row gap-6 justify-start mb-12">
+          <button
+            class="group bg-purple-600 text-white px-10 py-5 rounded-2xl font-bold text-lg hover:bg-black-50 transition-all duration-300 shadow-2xl hover:shadow-3xl transform hover:-translate-y-2 flex items-center justify-center"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              class="w-6 h-6 mr-3 group-hover:scale-110 transition-transform"
+            >
+              <path
+                d="M10 16.5C10 17.3284 9.32843 18 8.5 18C7.67157 18 7 17.3284 7 16.5C7 15.6716 7.67157 15 8.5 15C9.32843 15 10 15.6716 10 16.5ZM16 18C16.8284 18 17.5 17.3284 17.5 16.5C17.5 15.6716 16.8284 15 16 15C15.1716 15 14.5 15.6716 14.5 16.5C14.5 17.3284 15.1716 18 16 18ZM8 9C8 7.89543 8.89543 7 10 7C11.1046 7 12 7.89543 12 9C12 10.1046 11.1046 11 10 11C8.89543 11 8 10.1046 8 9ZM16 7C17.1046 7 18 7.89543 18 9C18 10.1046 17.1046 11 16 11C14.8954 11 14 10.1046 14 9C14 7.89543 14.8954 7 16 7Z"
+              />
+            </svg>
+            Buy USB – ₹499 Only
+          </button>
+          <button
+            class="bg-black/20 backdrop-blur-sm border-2 border-white text-black px-10 py-5 rounded-2xl font-bold text-lg hover:bg-white hover:text-purple-600 transition-all duration-300 flex items-center justify-center"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              class="w-6 h-6 mr-3"
+            >
+              <path
+                d="M12 2C6.47715 2 2 6.47715 2 12s4.47715 10 10 10 10-4.47715 10-10-4.47715-10-10-10zm0 18c-4.41119 0-8-3.58881-8-8s3.58881-8 8-8 8 3.58881 8 8-3.58881 8-8 8zm0-14c-2.20914 0-4 1.79086-4 4s1.79086 4 4 4 4-1.79086 4-4-1.79086-4-4-4zm0 14c-3.86603 0-7-3.13397-7-7s3.13397-7 7-7 7 3.13397 7 7-3.13397 7-7 7z"
+              />
+            </svg>
+            Try Online – ₹199/month
+          </button>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl">
+          <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 text-center">
+            <div class="flex justify-center mb-2 text-yellow-300">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="w-6 h-6"
               >
-                🌱
+                <path
+                  d="M12 22C12 22 4 14 4 12C4 10 12 2 12 2C12 2 20 10 20 12C20 14 12 22 12 22Z"
+                />
+              </svg>
+            </div>
+            <div class="text-2xl font-bold">300+</div>
+            <div class="text-sm opacity-80">Happy Students</div>
+          </div>
+          <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 text-center">
+            <div class="flex justify-center mb-2 text-yellow-300">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="w-6 h-6"
+              >
+                <path
+                  d="M12 2C12 2 4 10 4 12C4 14 12 22 12 22C12 22 20 14 20 12C20 10 12 2 12 2Z"
+                />
+              </svg>
+            </div>
+            <div class="text-2xl font-bold">4.9/5</div>
+            <div class="text-sm opacity-80">Parent Rating</div>
+          </div>
+          <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 text-center">
+            <div class="flex justify-center mb-2 text-yellow-300">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="w-6 h-6"
+              >
+                <path
+                  d="M12 2C12 2 4 10 4 12C4 14 12 22 12 22C12 22 20 14 20 12C20 10 12 2 12 2Z"
+                />
+              </svg>
+            </div>
+            <div class="text-2xl font-bold">30+</div>
+            <div class="text-sm opacity-80">AI Tools</div>
+          </div>
+          <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 text-center">
+            <div class="flex justify-center mb-2 text-yellow-300">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="w-6 h-6"
+              >
+                <path
+                  d="M12 2C12 2 4 10 4 12C4 14 12 22 12 22C12 22 20 14 20 12C20 10 12 2 12 2Z"
+                />
+              </svg>
+            </div>
+            <div class="text-2xl font-bold">100%</div>
+            <div class="text-sm opacity-80">Offline Access</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Features Section -->
+    <section class="py-24 bg-gradient-to-br from-gray-50 to-blue-50">
+      <div class="max-w-7xl mx-auto px-4">
+        <div class="text-center mb-16">
+          <h2 class="text-4xl md:text-5xl font-bold mb-6 text-gray-800">
+            Why 1,500+ Families Trust Student AI
+          </h2>
+          <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+            Discover the powerful features that make homework time enjoyable and
+            learning more effective
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="featuresGrid">
+          <!-- Card 1: 30+ AI Tools -->
+          <div
+            class="feature-card group bg-white rounded-3xl p-8 text-center hover:shadow-2xl transition-all duration-500 border border-gray-100"
+          >
+            <div
+              class="icon-container bg-gradient-to-r from-yellow-400 to-orange-500 p-6 rounded-2xl w-20 h-20 flex items-center justify-center mx-auto mb-6"
+            >
+              <i class="fas fa-robot text-3xl"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-4 text-gray-800">30+ AI Tools</h3>
+            <p class="text-gray-600 leading-relaxed">
+              Solve doubts instantly with comprehensive AI assistance
+            </p>
+          </div>
+
+          <!-- Card 2: Works Online -->
+          <div
+            class="feature-card group bg-white rounded-3xl p-8 text-center hover:shadow-2xl transition-all duration-500 border border-gray-100"
+          >
+            <div
+              class="icon-container bg-gradient-to-r from-green-400 to-emerald-500 p-6 rounded-2xl w-20 h-20 flex items-center justify-center mx-auto mb-6"
+            >
+              <i class="fas fa-wifi text-3xl"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-4 text-gray-800">Works Online</h3>
+            <p class="text-gray-600 leading-relaxed">
+              USB works on any laptop/PC
+            </p>
+          </div>
+
+          <!-- Card 3: Board Aligned -->
+          <div
+            class="feature-card group bg-white rounded-3xl p-8 text-center hover:shadow-2xl transition-all duration-500 border border-gray-100"
+          >
+            <div
+              class="icon-container bg-gradient-to-r from-blue-400 to-indigo-500 p-6 rounded-2xl w-20 h-20 flex items-center justify-center mx-auto mb-6"
+            >
+              <i class="fas fa-check-circle text-3xl"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-4 text-gray-800">Board Aligned</h3>
+            <p class="text-gray-600 leading-relaxed">
+              Content mapped to CBSE, ICSE and State Boards
+            </p>
+          </div>
+
+          <!-- Card 4: Bilingual Support -->
+          <div
+            class="feature-card mobile-hidden group bg-white rounded-3xl p-8 text-center hover:shadow-2xl transition-all duration-500 border border-gray-100"
+          >
+            <div
+              class="icon-container bg-gradient-to-r from-purple-400 to-pink-500 p-6 rounded-2xl w-20 h-20 flex items-center justify-center mx-auto mb-6"
+            >
+              <i class="fas fa-language text-3xl"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-4 text-gray-800">
+              Bilingual Support
+            </h3>
+            <p class="text-gray-600 leading-relaxed">
+              Available in both English and Hindi
+            </p>
+          </div>
+
+          <!-- Card 5: Chapter-Based Learning -->
+          <div
+            class="feature-card mobile-hidden group bg-white rounded-3xl p-8 text-center hover:shadow-2xl transition-all duration-500 border border-gray-100"
+          >
+            <div
+              class="icon-container bg-gradient-to-r from-cyan-400 to-blue-500 p-6 rounded-2xl w-20 h-20 flex items-center justify-center mx-auto mb-6"
+            >
+              <i class="fas fa-book-open text-3xl"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-4 text-gray-800">
+              Chapter-Based Learning
+            </h3>
+            <p class="text-gray-600 leading-relaxed">
+              Structured content organized by chapters and topics
+            </p>
+          </div>
+
+          <!-- Card 6: Practice Exercises -->
+          <div
+            class="feature-card mobile-hidden group bg-white rounded-3xl p-8 text-center hover:shadow-2xl transition-all duration-500 border border-gray-100"
+          >
+            <div
+              class="icon-container bg-gradient-to-r from-red-400 to-pink-500 p-6 rounded-2xl w-20 h-20 flex items-center justify-center mx-auto mb-6"
+            >
+              <i class="fas fa-dumbbell text-3xl"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-4 text-gray-800">
+              Practice Exercises
+            </h3>
+            <p class="text-gray-600 leading-relaxed">
+              Interactive exercises to reinforce learning concepts
+            </p>
+          </div>
+
+          <!-- Card 7: Study Planner -->
+          <div
+            class="feature-card mobile-hidden group bg-white rounded-3xl p-8 text-center hover:shadow-2xl transition-all duration-500 border border-gray-100"
+          >
+            <div
+              class="icon-container bg-gradient-to-r from-teal-400 to-green-500 p-6 rounded-2xl w-20 h-20 flex items-center justify-center mx-auto mb-6"
+            >
+              <i class="fas fa-calendar-alt text-3xl"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-4 text-gray-800">Study Planner</h3>
+            <p class="text-gray-600 leading-relaxed">
+              Smart scheduling to organize your study sessions
+            </p>
+          </div>
+
+          <!-- Card 8: 24x7 Doubt Clarifier -->
+          <div
+            class="feature-card mobile-hidden group bg-white rounded-3xl p-8 text-center hover:shadow-2xl transition-all duration-500 border border-gray-100"
+          >
+            <div
+              class="icon-container bg-gradient-to-r from-indigo-400 to-purple-500 p-6 rounded-2xl w-20 h-20 flex items-center justify-center mx-auto mb-6"
+            >
+              <i class="fas fa-question-circle text-3xl"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-4 text-gray-800">
+              24x7 Doubt Clarifier
+            </h3>
+            <p class="text-gray-600 leading-relaxed">
+              Get instant answers to your questions anytime
+            </p>
+          </div>
+
+          <!-- Card 9: Instant Homework Helper -->
+          <div
+            class="feature-card mobile-hidden group bg-white rounded-3xl p-8 text-center hover:shadow-2xl transition-all duration-500 border border-gray-100"
+          >
+            <div
+              class="icon-container bg-gradient-to-r from-amber-400 to-orange-500 p-6 rounded-2xl w-20 h-20 flex items-center justify-center mx-auto mb-6"
+            >
+              <i class="fas fa-rocket text-3xl"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-4 text-gray-800">
+              Instant Homework Helper
+            </h3>
+            <p class="text-gray-600 leading-relaxed">
+              Complete assignments faster with AI guidance
+            </p>
+          </div>
+        </div>
+
+        <!-- See More Button (Only visible on mobile) -->
+        <div class="text-center mt-12 md:hidden" id="seeMoreContainer">
+          <button
+            id="seeMoreBtn"
+            class="see-more-btn text-white px-8 py-4 rounded-full font-semibold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300"
+          >
+            See More Features
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const seeMoreBtn = document.getElementById("seeMoreBtn");
+        const seeMoreContainer = document.getElementById("seeMoreContainer");
+        const mobileHiddenCards = document.querySelectorAll(".mobile-hidden");
+        let isExpanded = false;
+
+        function isMobile() {
+          return window.innerWidth < 768;
+        }
+
+        function updateCardVisibility() {
+          if (isMobile()) {
+            if (!isExpanded) {
+              mobileHiddenCards.forEach((card) => {
+                card.style.display = "none";
+              });
+            } else {
+              mobileHiddenCards.forEach((card) => {
+                card.style.display = "block";
+                card.classList.add("show-all");
+              });
+            }
+            seeMoreContainer.style.display = "block";
+          } else {
+            mobileHiddenCards.forEach((card) => {
+              card.style.display = "block";
+              card.classList.remove("show-all");
+            });
+            seeMoreContainer.style.display = "none";
+          }
+        }
+
+        updateCardVisibility();
+
+        seeMoreBtn.addEventListener("click", function () {
+          if (!isExpanded) {
+            mobileHiddenCards.forEach((card, index) => {
+              setTimeout(() => {
+                card.style.display = "block";
+                card.classList.add("show-all");
+              }, index * 100);
+            });
+
+            seeMoreBtn.textContent = "Show Less";
+            isExpanded = true;
+          } else {
+            mobileHiddenCards.forEach((card) => {
+              card.style.display = "none";
+              card.classList.remove("show-all");
+            });
+
+            seeMoreBtn.textContent = "See More Features";
+            isExpanded = false;
+
+            document.querySelector("section").scrollIntoView({
+              behavior: "smooth",
+            });
+          }
+        });
+
+        window.addEventListener("resize", function () {
+          if (!isMobile() && isExpanded) {
+            isExpanded = false;
+            seeMoreBtn.textContent = "See More Features";
+          }
+          updateCardVisibility();
+        });
+      });
+    </script>
+
+    <!-- Why Student AI Beats Expensive Platforms Section -->
+    <section class="py-24 bg-gray-50">
+      <div class="max-w-7xl mx-auto px-4">
+        <div class="text-center mb-16">
+          <h2 class="text-4xl md:text-5xl font-bold mb-6 text-gray-800">
+            Why Student AI Beats Expensive Online Platforms
+          </h2>
+          <p class="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
+            While Khan Academy, Vedantu, and others drain your wallet with
+            expensive monthly fees, Student AI offers affordable online plans
+            and USB options for complete flexibility.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
+          <!-- Save Money -->
+          <div
+            class="bg-gradient-to-br from-green-100 to-emerald-200 rounded-2xl shadow-lg p-8 hover:shadow-xl transition-all duration-300 hover:-translate-y-2"
+          >
+            <div
+              class="bg-gradient-to-r from-green-500 to-emerald-600 text-white p-4 rounded-xl mb-6 text-center"
+            >
+              <img
+                src="https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=80&h=80&fit=crop&crop=center"
+                alt="Save Money"
+                class="w-16 h-16 mx-auto mb-3 rounded-full object-cover"
+              />
+              <h3 class="text-xl font-bold">Save ₹14,500+ Yearly</h3>
+            </div>
+            <ul class="space-y-3 text-gray-700">
+              <li class="flex items-center">
+                <div class="bg-green-500 rounded-full p-1 mr-3">
+                  <svg
+                    class="w-3 h-3 text-white"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    />
+                  </svg>
+                </div>
+                One-time payment vs monthly fees
+              </li>
+              <li class="flex items-center">
+                <div class="bg-green-500 rounded-full p-1 mr-3">
+                  <svg
+                    class="w-3 h-3 text-white"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    />
+                  </svg>
+                </div>
+                No hidden subscription costs
+              </li>
+              <li class="flex items-center">
+                <div class="bg-green-500 rounded-full p-1 mr-3">
+                  <svg
+                    class="w-3 h-3 text-white"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    />
+                  </svg>
+                </div>
+                Perfect for middle-class families
+              </li>
+              <li class="flex items-center">
+                <div class="bg-green-500 rounded-full p-1 mr-3">
+                  <svg
+                    class="w-3 h-3 text-white"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    />
+                  </svg>
+                </div>
+                Money-back guarantee
+              </li>
+            </ul>
+          </div>
+
+          <!-- Fast Learning -->
+          <div
+            class="bg-gradient-to-br from-purple-100 to-pink-200 rounded-2xl shadow-lg p-8 hover:shadow-xl transition-all duration-300 hover:-translate-y-2"
+          >
+            <div
+              class="bg-gradient-to-r from-purple-500 to-pink-600 text-white p-4 rounded-xl mb-6 text-center"
+            >
+              <img
+                src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=80&h=80&fit=crop&crop=center"
+                alt="Fast Learning"
+                class="w-16 h-16 mx-auto mb-3 rounded-full object-cover"
+              />
+              <h3 class="text-xl font-bold">5x Faster Learning</h3>
+            </div>
+            <ul class="space-y-3 text-gray-700">
+              <li class="flex items-center">
+                <div class="bg-purple-500 rounded-full p-1 mr-3">
+                  <svg
+                    class="w-3 h-3 text-white"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    />
+                  </svg>
+                </div>
+                Complete homework in 20 minutes
+              </li>
+              <li class="flex items-center">
+                <div class="bg-purple-500 rounded-full p-1 mr-3">
+                  <svg
+                    class="w-3 h-3 text-white"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    />
+                  </svg>
+                </div>
+                Instant doubt solving
+              </li>
+              <li class="flex items-center">
+                <div class="bg-purple-500 rounded-full p-1 mr-3">
+                  <svg
+                    class="w-3 h-3 text-white"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    />
+                  </svg>
+                </div>
+                More time for family & play
+              </li>
+              <li class="flex items-center">
+                <div class="bg-purple-500 rounded-full p-1 mr-3">
+                  <svg
+                    class="w-3 h-3 text-white"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    />
+                  </svg>
+                </div>
+                Reduced academic pressure
+              </li>
+            </ul>
+          </div>
+
+          <!-- Flexible Options -->
+          <div
+            class="bg-gradient-to-br from-yellow-100 to-orange-200 rounded-2xl shadow-lg p-8 hover:shadow-xl transition-all duration-300 hover:-translate-y-2"
+          >
+            <div
+              class="bg-gradient-to-r from-yellow-500 to-orange-600 text-white p-4 rounded-xl mb-6 text-center"
+            >
+              <img
+                src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=80&h=80&fit=crop&crop=center"
+                alt="Flexible Learning"
+                class="w-16 h-16 mx-auto mb-3 rounded-full object-cover"
+              />
+              <h3 class="text-xl font-bold">Choose Your Style</h3>
+            </div>
+            <ul class="space-y-3 text-gray-700">
+              <li class="flex items-center">
+                <div class="bg-orange-500 rounded-full p-1 mr-3">
+                  <svg
+                    class="w-3 h-3 text-white"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    />
+                  </svg>
+                </div>
+                USB: Works after initial setup
+              </li>
+              <li class="flex items-center">
+                <div class="bg-orange-500 rounded-full p-1 mr-3">
+                  <svg
+                    class="w-3 h-3 text-white"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    />
+                  </svg>
+                </div>
+                Online: ₹199/month only
+              </li>
+              <li class="flex items-center">
+                <div class="bg-orange-500 rounded-full p-1 mr-3">
+                  <svg
+                    class="w-3 h-3 text-white"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    />
+                  </svg>
+                </div>
+                Perfect for any budget
+              </li>
+              <li class="flex items-center">
+                <div class="bg-orange-500 rounded-full p-1 mr-3">
+                  <svg
+                    class="w-3 h-3 text-white"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    />
+                  </svg>
+                </div>
+                No long-term commitments
+              </li>
+            </ul>
+          </div>
+
+          <!-- Happy Family -->
+          <div
+            class="bg-gradient-to-br from-blue-100 to-cyan-200 rounded-2xl shadow-lg p-8 hover:shadow-xl transition-all duration-300 hover:-translate-y-2"
+          >
+            <div
+              class="bg-gradient-to-r from-blue-500 to-cyan-600 text-white p-4 rounded-xl mb-6 text-center"
+            >
+              <img
+                src="https://images.unsplash.com/photo-1511895426328-dc8714191300?w=80&h=80&fit=crop&crop=center"
+                alt="Happy Family"
+                class="w-16 h-16 mx-auto mb-3 rounded-full object-cover"
+              />
+              <h3 class="text-xl font-bold">Stress-Free Family</h3>
+            </div>
+            <ul class="space-y-3 text-gray-700">
+              <li class="flex items-center">
+                <div class="bg-blue-500 rounded-full p-1 mr-3">
+                  <svg
+                    class="w-3 h-3 text-white"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    />
+                  </svg>
+                </div>
+                No parent supervision needed
+              </li>
+              <li class="flex items-center">
+                <div class="bg-blue-500 rounded-full p-1 mr-3">
+                  <svg
+                    class="w-3 h-3 text-white"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    />
+                  </svg>
+                </div>
+                Confident independent learning
+              </li>
+              <li class="flex items-center">
+                <div class="bg-blue-500 rounded-full p-1 mr-3">
+                  <svg
+                    class="w-3 h-3 text-white"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    />
+                  </svg>
+                </div>
+                Happy children, happy parents
+              </li>
+              <li class="flex items-center">
+                <div class="bg-blue-500 rounded-full p-1 mr-3">
+                  <svg
+                    class="w-3 h-3 text-white"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    />
+                  </svg>
+                </div>
+                Better family relationships
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Pricing Section -->
+    <section id="plans" class="pt-8 pb-24 bg-white">
+      <div class="max-w-7xl mx-auto px-4">
+        <div class="text-center mb-16">
+          <h2 class="text-4xl md:text-5xl font-bold mb-6 text-gray-800">
+            Choose Your Perfect Plan
+          </h2>
+          <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+            Affordable AI-powered education solutions designed for every
+            student's needs
+          </p>
+        </div>
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div
+            class="relative bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-500 border-2 border-gray-200 hover:-translate-y-2"
+          >
+            <div
+              class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white p-4 rounded-2xl mb-6"
+            >
+              <h3 class="text-2xl font-bold text-center">USB 4 GB</h3>
+            </div>
+            <div class="text-center mb-6">
+              <div class="text-4xl font-bold text-gray-800 mb-2">₹499</div>
+              <div class="text-lg text-gray-500 line-through">₹799</div>
+              <div class="text-green-600 font-semibold">Save up to 40%</div>
+            </div>
+            <ul class="space-y-4 mb-8">
+              <li class="flex items-center text-gray-600">
+                <div class="bg-green-100 rounded-full p-1 mr-3">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    class="w-4 h-4 text-green-600"
+                  >
+                    <path
+                      d="M12 2C6.47715 2 2 6.47715 2 12s4.47715 10 10 10 10-4.47715 10-10-4.47715-10-10-10zm0 18c-4.41119 0-8-3.58881-8-8s3.58881-8 8-8 8 3.58881 8 8-3.58881 8-8 8zm0-14c-2.20914 0-4 1.79086-4 4s1.79086 4 4 4 4-1.79086 4-4-1.79086-4-4-4zm0 14c-3.86603 0-7-3.13397-7-7s3.13397-7 7-7 7 3.13397 7 7-3.13397 7-7 7z"
+                    />
+                  </svg>
+                </div>
+                Basic AI tools
+              </li>
+              <li class="flex items-center text-gray-600">
+                <div class="bg-green-100 rounded-full p-1 mr-3">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    class="w-4 h-4 text-green-600"
+                  >
+                    <path
+                      d="M12 2C6.47715 2 2 6.47715 2 12s4.47715 10 10 10 10-4.47715 10-10-4.47715-10-10-10zm0 18c-4.41119 0-8-3.58881-8-8s3.58881-8 8-8 8 3.58881 8 8-3.58881 8-8 8zm0-14c-2.20914 0-4 1.79086-4 4s1.79086 4 4 4 4-1.79086 4-4-1.79086-4-4-4zm0 14c-3.86603 0-7-3.13397-7-7s3.13397-7 7-7 7 3.13397 7 7-3.13397 7-7 7z"
+                    />
+                  </svg>
+                </div>
+                Works offline
+              </li>
+              <li class="flex items-center text-gray-600">
+                <div class="bg-green-100 rounded-full p-1 mr-3">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    class="w-4 h-4 text-green-600"
+                  >
+                    <path
+                      d="M12 2C6.47715 2 2 6.47715 2 12s4.47715 10 10 10 10-4.47715 10-10-4.47715-10-10-10zm0 18c-4.41119 0-8-3.58881-8-8s3.58881-8 8-8 8 3.58881 8 8-3.58881 8-8 8zm0-14c-2.20914 0-4 1.79086-4 4s1.79086 4 4 4 4-1.79086 4-4-1.79086-4-4-4zm0 14c-3.86603 0-7-3.13397-7-7s3.13397-7 7-7 7 3.13397 7 7-3.13397 7-7 7z"
+                    />
+                  </svg>
+                </div>
+                Class 4-12 content
+              </li>
+            </ul>
+            <button
+              class="w-full py-4 rounded-2xl font-bold text-lg transition-all duration-300 bg-gray-100 text-gray-800 hover:bg-gray-200"
+            >
+              Get Started Now
+            </button>
+          </div>
+          <div
+            class="relative bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-500 border-2 border-purple-500 hover:-translate-y-2"
+          >
+            <div
+              class="bg-gradient-to-r from-purple-500 to-pink-500 text-white p-4 rounded-2xl mb-6"
+            >
+              <h3 class="text-2xl font-bold text-center">USB 8 GB</h3>
+            </div>
+            <div class="text-center mb-6">
+              <div class="text-4xl font-bold text-gray-800 mb-2">₹799</div>
+              <div class="text-lg text-gray-500 line-through">₹1,199</div>
+              <div class="text-green-600 font-semibold">Save up to 35%</div>
+            </div>
+            <ul class="space-y-4 mb-8">
+              <li class="flex items-center text-gray-600">
+                <div class="bg-green-100 rounded-full p-1 mr-3">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    class="w-4 h-4 text-green-600"
+                  >
+                    <path
+                      d="M12 2C6.47715 2 2 6.47715 2 12s4.47715 10 10 10 10-4.47715 10-10-4.47715-10-10-10zm0 18c-4.41119 0-8-3.58881-8-8s3.58881-8 8-8 8 3.58881 8 8-3.58881 8-8 8zm0-14c-2.20914 0-4 1.79086-4 4s1.79086 4 4 4 4-1.79086 4-4-1.79086-4-4-4zm0 14c-3.86603 0-7-3.13397-7-7s3.13397-7 7-7 7 3.13397 7 7-3.13397 7-7 7z"
+                    />
+                  </svg>
+                </div>
+                Advanced AI tools
+              </li>
+              <li class="flex items-center text-gray-600">
+                <div class="bg-green-100 rounded-full p-1 mr-3">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    class="w-4 h-4 text-green-600"
+                  >
+                    <path
+                      d="M12 2C6.47715 2 2 6.47715 2 12s4.47715 10 10 10 10-4.47715 10-10-4.47715-10-10-10zm0 18c-4.41119 0-8-3.58881-8-8s3.58881-8 8-8 8 3.58881 8 8-3.58881 8-8 8zm0-14c-2.20914 0-4 1.79086-4 4s1.79086 4 4 4 4-1.79086 4-4-1.79086-4-4-4zm0 14c-3.86603 0-7-3.13397-7-7s3.13397-7 7-7 7 3.13397 7 7-3.13397 7-7 7z"
+                    />
+                  </svg>
+                </div>
+                Priority support
+              </li>
+              <li class="flex items-center text-gray-600">
+                <div class="bg-green-100 rounded-full p-1 mr-3">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    class="w-4 h-4 text-green-600"
+                  >
+                    <path
+                      d="M12 2C6.47715 2 2 6.47715 2 12s4.47715 10 10 10 10-4.47715 10-10-4.47715-10-10-10zm0 18c-4.41119 0-8-3.58881-8-8s3.58881-8 8-8 8 3.58881 8 8-3.58881 8-8 8zm0-14c-2.20914 0-4 1.79086-4 4s1.79086 4 4 4 4-1.79086 4-4-1.79086-4-4-4zm0 14c-3.86603 0-7-3.13397-7-7s3.13397-7 7-7 7 3.13397 7 7-3.13397 7-7 7z"
+                    />
+                  </svg>
+                </div>
+                All features of 4GB
+              </li>
+            </ul>
+            <button
+              class="w-full py-4 rounded-2xl font-bold text-lg transition-all duration-300 bg-purple-600 text-white hover:bg-purple-700"
+            >
+              Get Started Now
+            </button>
+            <div
+              class="absolute top-0 right-0 bg-yellow-400 text-gray-800 font-bold px-3 py-1 rounded-bl-lg rounded-tr-lg"
+            >
+              Popular
+            </div>
+          </div>
+          <div
+            class="relative bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-500 border-2 border-gray-200 hover:-translate-y-2"
+          >
+            <div
+              class="bg-gradient-to-r from-green-500 to-emerald-600 text-white p-4 rounded-2xl mb-6"
+            >
+              <h3 class="text-2xl font-bold text-center">Online Plan</h3>
+            </div>
+            <div class="text-center mb-6">
+              <div class="text-4xl font-bold text-gray-800 mb-2">₹199</div>
+              <div class="text-lg text-gray-500">per month</div>
+            </div>
+            <ul class="space-y-4 mb-8">
+              <li class="flex items-center text-gray-600">
+                <div class="bg-green-100 rounded-full p-1 mr-3">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    class="w-4 h-4 text-green-600"
+                  >
+                    <path
+                      d="M12 2C6.47715 2 2 6.47715 2 12s4.47715 10 10 10 10-4.47715 10-10-4.47715-10-10-10zm0 18c-4.41119 0-8-3.58881-8-8s3.58881-8 8-8 8 3.58881 8 8-3.58881 8-8 8zm0-14c-2.20914 0-4 1.79086-4 4s1.79086 4 4 4 4-1.79086 4-4-1.79086-4-4-4zm0 14c-3.86603 0-7-3.13397-7-7s3.13397-7 7-7 7 3.13397 7 7-3.13397 7-7 7z"
+                    />
+                  </svg>
+                </div>
+                All AI tools
+              </li>
+              <li class="flex items-center text-gray-600">
+                <div class="bg-green-100 rounded-full p-1 mr-3">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    class="w-4 h-4 text-green-600"
+                  >
+                    <path
+                      d="M12 2C6.47715 2 2 6.47715 2 12s4.47715 10 10 10 10-4.47715 10-10-4.47715-10-10-10zm0 18c-4.41119 0-8-3.58881-8-8s3.58881-8 8-8 8 3.58881 8 8-3.58881 8-8 8zm0-14c-2.20914 0-4 1.79086-4 4s1.79086 4 4 4 4-1.79086 4-4-1.79086-4-4-4zm0 14c-3.86603 0-7-3.13397-7-7s3.13397-7 7-7 7 3.13397 7 7-3.13397 7-7 7z"
+                    />
+                  </svg>
+                </div>
+                Regular updates
+              </li>
+              <li class="flex items-center text-gray-600">
+                <div class="bg-green-100 rounded-full p-1 mr-3">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    class="w-4 h-4 text-green-600"
+                  >
+                    <path
+                      d="M12 2C6.47715 2 2 6.47715 2 12s4.47715 10 10 10 10-4.47715 10-10-4.47715-10-10-10zm0 18c-4.41119 0-8-3.58881-8-8s3.58881-8 8-8 8 3.58881 8 8-3.58881 8-8 8zm0-14c-2.20914 0-4 1.79086-4 4s1.79086 4 4 4 4-1.79086 4-4-1.79086-4-4-4zm0 14c-3.86603 0-7-3.13397-7-7s3.13397-7 7-7 7 3.13397 7 7-3.13397 7-7 7z"
+                    />
+                  </svg>
+                </div>
+                Access from anywhere
+              </li>
+            </ul>
+            <button
+              class="w-full py-4 rounded-2xl font-bold text-lg transition-all duration-300 bg-gray-100 text-gray-800 hover:bg-gray-200"
+            >
+              Get Started Now
+            </button>
+          </div>
+          <div
+            class="relative bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-500 border-2 border-gray-200 hover:-translate-y-2"
+          >
+            <div
+              class="bg-gradient-to-r from-purple-500 to-pink-500 text-white p-4 rounded-2xl mb-6"
+            >
+              <h3 class="text-2xl font-bold text-center">Combo Pack</h3>
+            </div>
+            <div class="text-center mb-6">
+              <div class="text-4xl font-bold text-gray-800 mb-2">₹999</div>
+              <div class="text-lg text-gray-500 line-through">₹1,499</div>
+              <div class="text-green-600 font-semibold">Save up to 33%</div>
+            </div>
+            <ul class="space-y-4 mb-8">
+              <li class="flex items-center text-gray-600">
+                <div class="bg-green-100 rounded-full p-1 mr-3">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    class="w-4 h-4 text-green-600"
+                  >
+                    <path
+                      d="M12 2C6.47715 2 2 6.47715 2 12s4.47715 10 10 10 10-4.47715 10-10-4.47715-10-10-10zm0 18c-4.41119 0-8-3.58881-8-8s3.58881-8 8-8 8 3.58881 8 8-3.58881 8-8 8zm0-14c-2.20914 0-4 1.79086-4 4s1.79086 4 4 4 4-1.79086 4-4-1.79086-4-4-4zm0 14c-3.86603 0-7-3.13397-7-7s3.13397-7 7-7 7 3.13397 7 7-3.13397 7-7 7z"
+                    />
+                  </svg>
+                </div>
+                USB 8GB + Online Plan
+              </li>
+              <li class="flex items-center text-gray-600">
+                <div class="bg-green-100 rounded-full p-1 mr-3">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    class="w-4 h-4 text-green-600"
+                  >
+                    <path
+                      d="M12 2C6.47715 2 2 6.47715 2 12s4.47715 10 10 10 10-4.47715 10-10-4.47715-10-10-10zm0 18c-4.41119 0-8-3.58881-8-8s3.58881-8 8-8 8 3.58881 8 8-3.58881 8-8 8zm0-14c-2.20914 0-4 1.79086-4 4s1.79086 4 4 4 4-1.79086 4-4-1.79086-4-4-4zm0 14c-3.86603 0-7-3.13397-7-7s3.13397-7 7-7 7 3.13397 7 7-3.13397 7-7 7z"
+                    />
+                  </svg>
+                </div>
+                Best value package
+              </li>
+              <li class="flex items-center text-gray-600">
+                <div class="bg-green-100 rounded-full p-1 mr-3">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    class="w-4 h-4 text-green-600"
+                  >
+                    <path
+                      d="M12 2C6.47715 2 2 6.47715 2 12s4.47715 10 10 10 10-4.47715 10-10-4.47715-10-10-10zm0 18c-4.41119 0-8-3.58881-8-8s3.58881-8 8-8 8 3.58881 8 8-3.58881 8-8 8zm0-14c-2.20914 0-4 1.79086-4 4s1.79086 4 4 4 4-1.79086 4-4-1.79086-4-4-4zm0 14c-3.86603 0-7-3.13397-7-7s3.13397-7 7-7 7 3.13397 7 7-3.13397 7-7 7z"
+                    />
+                  </svg>
+                </div>
+                Priority support
+              </li>
+            </ul>
+            <button
+              class="w-full py-4 rounded-2xl font-bold text-lg transition-all duration-300 bg-gray-100 text-gray-800 hover:bg-gray-200"
+            >
+              Get Started Now
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="py-24 bg-gradient-to-br from-purple-50 to-pink-50">
+      <div class="max-w-7xl mx-auto px-4">
+        <div class="text-center mb-16">
+          <h2 class="text-4xl md:text-5xl font-bold mb-6 text-gray-800">
+            Success Stories from Real Families
+          </h2>
+          <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+            See how Student AI is transforming education for students across
+            India
+          </p>
+        </div>
+        <div class="grid md:grid-cols-3 gap-8">
+          <div
+            class="bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2"
+          >
+            <div class="flex mb-6">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="w-6 h-6 fill-yellow-400 text-yellow-400"
+              >
+                <path
+                  d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
+                />
+              </svg>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="w-6 h-6 fill-yellow-400 text-yellow-400"
+              >
+                <path
+                  d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
+                />
+              </svg>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="w-6 h-6 fill-yellow-400 text-yellow-400"
+              >
+                <path
+                  d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
+                />
+              </svg>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="w-6 h-6 fill-yellow-400 text-yellow-400"
+              >
+                <path
+                  d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
+                />
+              </svg>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="w-6 h-6 fill-yellow-400 text-yellow-400"
+              >
+                <path
+                  d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
+                />
+              </svg>
+            </div>
+            <p class="text-lg mb-6 text-gray-700 leading-relaxed italic">
+              "My son finished homework in 20 minutes! This AI tool is a
+              game-changer for busy parents."
+            </p>
+            <div class="flex items-center">
+              <img
+                src="https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop"
+                alt="Priya Sharma"
+                class="w-16 h-16 rounded-full mr-4 object-cover"
+              />
+              <div>
+                <p class="font-bold text-gray-800 text-lg">Priya Sharma</p>
+                <p class="text-gray-600">Parent of Class 8 Student</p>
+              </div>
+            </div>
+          </div>
+          <div
+            class="bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2"
+          >
+            <div class="flex mb-6">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="w-6 h-6 fill-yellow-400 text-yellow-400"
+              >
+                <path
+                  d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
+                />
+              </svg>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="w-6 h-6 fill-yellow-400 text-yellow-400"
+              >
+                <path
+                  d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
+                />
+              </svg>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="w-6 h-6 fill-yellow-400 text-yellow-400"
+              >
+                <path
+                  d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
+                />
+              </svg>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="w-6 h-6 fill-yellow-400 text-yellow-400"
+              >
+                <path
+                  d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
+                />
+              </svg>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="w-6 h-6 fill-gray-300 text-gray-300"
+              >
+                <path
+                  d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
+                />
+              </svg>
+            </div>
+            <p class="text-lg mb-6 text-gray-700 leading-relaxed italic">
+              "The AI explanations are so clear! My daughter's grades improved
+              significantly in just one month."
+            </p>
+            <div class="flex items-center">
+              <img
+                src="https://images.pexels.com/photos/2379005/pexels-photo-2379005.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop"
+                alt="Rahul Verma"
+                class="w-16 h-16 rounded-full mr-4 object-cover"
+              />
+              <div>
+                <p class="font-bold text-gray-800 text-lg">Rahul Verma</p>
+                <p class="text-gray-600">Parent of Class 10 Student</p>
+              </div>
+            </div>
+          </div>
+          <div
+            class="bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2"
+          >
+            <div class="flex mb-6">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="w-6 h-6 fill-yellow-400 text-yellow-400"
+              >
+                <path
+                  d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
+                />
+              </svg>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="w-6 h-6 fill-yellow-400 text-yellow-400"
+              >
+                <path
+                  d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
+                />
+              </svg>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="w-6 h-6 fill-yellow-400 text-yellow-400"
+              >
+                <path
+                  d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
+                />
+              </svg>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="w-6 h-6 fill-yellow-400 text-yellow-400"
+              >
+                <path
+                  d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
+                />
+              </svg>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="w-6 h-6 fill-yellow-400 text-yellow-400"
+              >
+                <path
+                  d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
+                />
+              </svg>
+            </div>
+            <p class="text-lg mb-6 text-gray-700 leading-relaxed italic">
+              "As a teacher, I'm impressed by how well this complements
+              classroom learning. Highly recommended!"
+            </p>
+            <div class="flex items-center">
+              <img
+                src="https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop"
+                alt="Anjali Patel"
+                class="w-16 h-16 rounded-full mr-4 object-cover"
+              />
+              <div>
+                <p class="font-bold text-gray-800 text-lg">Anjali Patel</p>
+                <p class="text-gray-600">High School Teacher</p>
               </div>
             </div>
           </div>
         </div>
       </div>
+    </section>
 
-      <!-- Main Content -->
-      <main class="main-content">
-        <div class="container">
-          <div class="section" id="overview">
-            <h2><i class="fas fa-seedling me-2"></i>Project Overview</h2>
-            <div class="highlight-box">
-              <h4>🎯 What You'll Build</h4>
-              <p>
-                The Plant Identifier is an AI-powered application that
-                identifies plant species from images using computer vision and
-                machine learning. Users upload an image via a web or mobile app,
-                and the system predicts the species with a confidence score.
-                This project is relevant in AI due to its application in
-                computer vision, supporting education, agriculture, and
-                conservation.
-              </p>
-            </div>
-
-            <div class="row mt-4">
-              <div class="col-md-4">
-                <div class="feature-card">
-                  <div class="feature-icon">🤖</div>
-                  <h5>AI-Powered</h5>
-                  <p>
-                    Uses advanced CNN models for accurate plant identification
-                  </p>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="feature-card">
-                  <div class="feature-icon">📱</div>
-                  <h5>User-Friendly</h5>
-                  <p>Simple web interface for easy image upload and results</p>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="feature-card">
-                  <div class="feature-icon">🌍</div>
-                  <h5>Impactful</h5>
-                  <p>
-                    Supports education, agriculture, and conservation efforts
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="section" id="audience">
-            <h2>Target Audience</h2>
-            <div class="row">
-              <div class="col-md-4 mb-3">
-                <div class="feature-card">
-                  <div class="feature-icon">🎓</div>
-                  <h5>Students</h5>
-                  <p>
-                    Beginners in AI/computer science learning machine learning
-                    and computer vision
-                  </p>
-                </div>
-              </div>
-              <div class="col-md-4 mb-3">
-                <div class="feature-card">
-                  <div class="feature-icon">💻</div>
-                  <h5>Developers</h5>
-                  <p>
-                    Programmers building practical AI applications with Python
-                  </p>
-                </div>
-              </div>
-              <div class="col-md-4 mb-3">
-                <div class="feature-card">
-                  <div class="feature-icon">🏢</div>
-                  <h5>IT Professionals</h5>
-                  <p>Professionals upskilling in AI for deployable solutions</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="section" id="two-minute">
-            <h2>Two-Minute Project Explanation</h2>
-            <div class="highlight-box">
-              <h4>🎤 Your Elevator Pitch</h4>
-              <p>
-                <strong>Script</strong>: "Hi, I'm excited to present my Plant
-                Identifier project, an AI app that identifies plant species from
-                photos. Picture snapping a photo of a plant—the app analyzes it
-                and says it's a rose with 95% confidence. I used a pre-trained
-                CNN like MobileNetV2, trained on PlantNet datasets, and built a
-                Flask web app for user interaction. It helps gardeners, farmers,
-                and educators promote plant literacy and sustainability. This
-                project showcases my skills in computer vision, model training,
-                and app deployment!"
+    <!-- FAQ Section -->
+    <section class="py-24 bg-gray-50">
+      <div class="max-w-4xl mx-auto px-4">
+        <div class="text-center mb-16">
+          <h2 class="text-4xl md:text-5xl font-bold mb-6 text-gray-800">
+            Frequently Asked Questions
+          </h2>
+          <p class="text-xl text-gray-600 leading-relaxed">
+            Everything you need to know about Student AI
+          </p>
+        </div>
+        <div class="space-y-6">
+          <div
+            class="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl shadow-lg overflow-hidden border border-blue-100"
+          >
+            <button
+              onclick="toggleFaq(0)"
+              class="w-full px-8 py-6 text-left flex items-center justify-between hover:bg-white/50 transition-colors duration-200"
+            >
+              <span class="text-lg font-semibold text-gray-800 pr-4"
+                >Does this work without internet?</span
+              >
+              <svg
+                id="faq-icon-0"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="w-6 h-6 text-purple-600 transition-transform duration-300 flex-shrink-0"
+              >
+                <path
+                  d="M12 15.5l-6-6 1.41-1.41L11 12.67l3.59-3.58L14.59 8l6 6-6 6z"
+                />
+              </svg>
+            </button>
+            <div id="faq-0" class="hidden px-8 pb-6 bg-white/30">
+              <p class="text-gray-700 leading-relaxed text-lg">
+                Yes! The USB version runs completely offline on any Windows
+                laptop or desktop. No internet connection required once
+                installed.
               </p>
             </div>
           </div>
+          <div
+            class="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl shadow-lg overflow-hidden border border-blue-100"
+          >
+            <button
+              onclick="toggleFaq(1)"
+              class="w-full px-8 py-6 text-left flex items-center justify-between hover:bg-white/50 transition-colors duration-200"
+            >
+              <span class="text-lg font-semibold text-gray-800 pr-4"
+                >What subjects are covered?</span
+              >
+              <svg
+                id="faq-icon-1"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="w-6 h-6 text-purple-600 transition-transform duration-300 flex-shrink-0"
+              >
+                <path
+                  d="M12 15.5l-6-6 1.41-1.41L11 12.67l3.59-3.58L14.59 8l6 6-6 6z"
+                />
+              </svg>
+            </button>
+            <div id="faq-1" class="hidden px-8 pb-6 bg-white/30">
+              <p class="text-gray-700 leading-relaxed text-lg">
+                We cover all major subjects including Math, Science, Social
+                Studies, English, Hindi, and more, aligned with CBSE, ICSE, and
+                state board curriculums for classes 4-12.
+              </p>
+            </div>
+          </div>
+          <div
+            class="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl shadow-lg overflow-hidden border border-blue-100"
+          >
+            <button
+              onclick="toggleFaq(2)"
+              class="w-full px-8 py-6 text-left flex items-center justify-between hover:bg-white/50 transition-colors duration-200"
+            >
+              <span class="text-lg font-semibold text-gray-800 pr-4"
+                >How does the AI help with homework?</span
+              >
+              <svg
+                id="faq-icon-2"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="w-6 h-6 text-purple-600 transition-transform duration-300 flex-shrink-0"
+              >
+                <path
+                  d="M12 15.5l-6-6 1.41-1.41L11 12.67l3.59-3.58L14.59 8l6 6-6 6z"
+                />
+              </svg>
+            </button>
+            <div id="faq-2" class="hidden px-8 pb-6 bg-white/30">
+              <p class="text-gray-700 leading-relaxed text-lg">
+                Our AI tools can explain concepts, solve problems step-by-step,
+                generate practice questions, and even help with writing
+                assignments. It's like having a personal tutor available 24/7.
+              </p>
+            </div>
+          </div>
+          <div
+            class="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl shadow-lg overflow-hidden border border-blue-100"
+          >
+            <button
+              onclick="toggleFaq(3)"
+              class="w-full px-8 py-6 text-left flex items-center justify-between hover:bg-white/50 transition-colors duration-200"
+            >
+              <span class="text-lg font-semibold text-gray-800 pr-4"
+                >What are the system requirements?</span
+              >
+              <svg
+                id="faq-icon-3"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="w-6 h-6 text-purple-600 transition-transform duration-300 flex-shrink-0"
+              >
+                <path
+                  d="M12 15.5l-6-6 1.41-1.41L11 12.67l3.59-3.58L14.59 8l6 6-6 6z"
+                />
+              </svg>
+            </button>
+            <div id="faq-3" class="hidden px-8 pb-6 bg-white/30">
+              <p class="text-gray-700 leading-relaxed text-lg">
+                The USB works on any Windows laptop or desktop with Windows 7 or
+                above, at least 2GB RAM, and 4GB of free storage space. For the
+                online version, you just need a modern browser and internet
+                connection.
+              </p>
+            </div>
+          </div>
+          <div
+            class="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl shadow-lg overflow-hidden border border-blue-100"
+          >
+            <button
+              onclick="toggleFaq(4)"
+              class="w-full px-8 py-6 text-left flex items-center justify-between hover:bg-white/50 transition-colors duration-200"
+            >
+              <span class="text-lg font-semibold text-gray-800 pr-4"
+                >Is there a free trial available?</span
+              >
+              <svg
+                id="faq-icon-4"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="w-6 h-6 text-purple-600 transition-transform duration-300 flex-shrink-0"
+              >
+                <path
+                  d="M12 15.5l-6-6 1.41-1.41L11 12.67l3.59-3.58L14.59 8l6 6-6 6z"
+                />
+              </svg>
+            </button>
+            <div id="faq-4" class="hidden px-8 pb-6 bg-white/30">
+              <p class="text-gray-700 leading-relaxed text-lg">
+                Yes! We offer a limited free trial of our online version. For
+                the USB version, we have a 30-day money-back guarantee if you're
+                not satisfied with the product.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-          <div class="section" id="value">
-            <h2>Project Value Proposition</h2>
-            <p>
-              The Plant Identifier solves the problem of identifying unknown
-              plants, offering:
+    <!-- CTA Section -->
+    <section class="py-24 bg-gradient-to-br from-purple-50 to-pink-50">
+      <div class="absolute inset-0 opacity-10">
+        <div
+          class="absolute top-10 left-10 w-32 h-32 bg-white rounded-full"
+        ></div>
+        <div
+          class="absolute bottom-10 right-10 w-24 h-24 bg-yellow-300 rounded-full"
+        ></div>
+        <div
+          class="absolute top-1/2 left-1/4 w-16 h-16 bg-green-300 rounded-full"
+        ></div>
+      </div>
+      <div class="relative max-w-4xl mx-auto px-4 text-center">
+        <h2 class="text-4xl md:text-5xl font-bold mb-6 leading-tight">
+          Ready to Transform Your Child's Education?
+        </h2>
+        <p class="text-xl mb-8 opacity-90 leading-relaxed">
+          Join 1,500+ happy families who've already discovered the power of
+          AI-assisted learning
+        </p>
+        <div class="flex flex-col sm:flex-row gap-6 justify-center">
+          <button
+            class="group bg-white text-purple-600 px-10 py-5 rounded-2xl font-bold text-lg hover:bg-gray-50 transition-all duration-300 shadow-2xl hover:shadow-3xl transform hover:-translate-y-2 flex items-center justify-center"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              class="w-6 h-6 mr-3 group-hover:scale-110 transition-transform"
+            >
+              <path
+                d="M12 2C6.47715 2 2 6.47715 2 12s4.47715 10 10 10 10-4.47715 10-10-4.47715-10-10-10zm0 18c-4.41119 0-8-3.58881-8-8s3.58881-8 8-8 8 3.58881 8 8-3.58881 8-8 8zm0-14c-2.20914 0-4 1.79086-4 4s1.79086 4 4 4 4-1.79086 4-4-1.79086-4-4-4zm0 14c-3.86603 0-7-3.13397-7-7s3.13397-7 7-7 7 3.13397 7 7-3.13397 7-7 7z"
+              />
+            </svg>
+            Start Your Journey Today
+          </button>
+          <button
+            class="bg-white/20 backdrop-blur-sm border-2 border-white text-black px-10 py-5 rounded-2xl font-bold text-lg hover:bg-white hover:text-purple-600 transition-all duration-300 flex items-center justify-center"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              class="w-6 h-6 mr-3"
+            >
+              <path
+                d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"
+              />
+            </svg>
+            Call for Free Demo
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+
+    <footer class="py-24 bg-gray-50">
+      <div class="max-w-7xl mx-auto px-4">
+        <div class="grid md:grid-cols-4 gap-8 mb-12">
+          <div class="md:col-span-2">
+            <div class="flex items-center mb-6">
+              <div
+                class="bg-gradient-to-r from-purple-500 to-pink-500 p-3 rounded-2xl mr-4"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  class="w-8 h-8 text-white"
+                >
+                  <path
+                    d="M12 2L15.5 4.5 21 9H21l-6 6V22h-2v-7.5L8.5 19.5 12 22h2v-9L15.5 13.5 12 12z"
+                  />
+                </svg>
+              </div>
+              <div>
+                <h3 class="text-2xl font-bold text-gray-900">Student AI</h3>
+                <p class="text-gray-600">India's First AI USB</p>
+              </div>
+            </div>
+            <p class="text-gray-700 leading-relaxed mb-6 max-w-md">
+              Empowering students across India with AI-powered learning tools
+              that make education accessible, engaging, and effective.
             </p>
-            <div class="row mt-4">
-              <div class="col-md-4 mb-3">
-                <div class="feature-card">
-                  <div class="feature-icon">🌿</div>
-                  <h5>Environmental Education</h5>
-                  <p>Enhances biodiversity awareness and learning</p>
-                </div>
-              </div>
-              <div class="col-md-4 mb-3">
-                <div class="feature-card">
-                  <div class="feature-icon">🚜</div>
-                  <h5>Agricultural Efficiency</h5>
-                  <p>Helps farmers identify crops and weeds quickly</p>
-                </div>
-              </div>
-              <div class="col-md-4 mb-3">
-                <div class="feature-card">
-                  <div class="feature-icon">🌍</div>
-                  <h5>Conservation Support</h5>
-                  <p>Aids in cataloging plant species for research</p>
-                </div>
-              </div>
-            </div>
-            <p class="mt-3">
-              Its accessibility and open-source data make it scalable and
-              impactful.
-            </p>
-          </div>
-
-          <div class="section" id="users">
-            <h2>Who Can Use This Project</h2>
-            <div class="row">
-              <div class="col-md-6 mb-3">
-                <div class="feature-card">
-                  <div class="feature-icon">🌻</div>
-                  <h5>Gardeners & Hobbyists</h5>
-                  <p>Identify plants for better care and maintenance</p>
-                </div>
-              </div>
-              <div class="col-md-6 mb-3">
-                <div class="feature-card">
-                  <div class="feature-icon">🌾</div>
-                  <h5>Farmers</h5>
-                  <p>Detect crops and weeds to optimize farming practices</p>
-                </div>
-              </div>
-              <div class="col-md-6 mb-3">
-                <div class="feature-card">
-                  <div class="feature-icon">👨‍🏫</div>
-                  <h5>Educators & Students</h5>
-                  <p>Use for interactive botany education and learning</p>
-                </div>
-              </div>
-              <div class="col-md-6 mb-3">
-                <div class="feature-card">
-                  <div class="feature-icon">🔬</div>
-                  <h5>Conservationists</h5>
-                  <p>Monitor plant species for biodiversity research</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="section" id="outcomes">
-            <h2>Learning Outcomes</h2>
-            <div class="row">
-              <div class="col-md-6">
-                <h5>🛠️ Technical Skills</h5>
-                <ul>
-                  <li>Master Python, TensorFlow, OpenCV, and Flask</li>
-                  <li>
-                    Understand CNNs, transfer learning, and image preprocessing
-                  </li>
-                  <li>Build a portfolio-ready project</li>
-                </ul>
-              </div>
-              <div class="col-md-6">
-                <h5>💼 Professional Skills</h5>
-                <ul>
-                  <li>Gain end-to-end project management experience</li>
-                  <li>
-                    Develop problem-solving skills for real-world data
-                    challenges
-                  </li>
-                  <li>Learn deployment and documentation best practices</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-
-          <div class="section" id="steps">
-            <h2>Step-by-Step Implementation Guide</h2>
-
-            <div class="step-card">
-              <div class="d-flex align-items-start">
-                <span class="step-number">1</span>
-                <div>
-                  <h5>Setup Environment</h5>
-                  <p>
-                    Install Python 3.8+: <code>pip install python</code><br />
-                    Create virtual environment: <code>python -m venv env</code
-                    ><br />
-                    Install libraries:
-                    <code
-                      >pip install tensorflow keras opencv-python numpy pandas
-                      flask</code
-                    >
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div class="step-card">
-              <div class="d-flex align-items-start">
-                <span class="step-number">2</span>
-                <div>
-                  <h5>Collect Data</h5>
-                  <p>
-                    Source 500+ images from PlantNet or Kaggle<br />
-                    Organize into folders: <code>/dataset/rose/</code>
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div class="step-card">
-              <div class="d-flex align-items-start">
-                <span class="step-number">3</span>
-                <div>
-                  <h5>Preprocess Data</h5>
-                  <p>
-                    Resize images to 224x224: <code>cv2.resize()</code><br />
-                    Augment data: <code>tensorflow.keras.preprocessing</code
-                    ><br />
-                    Split: 70% train, 20% validation, 10% test
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div class="step-card">
-              <div class="d-flex align-items-start">
-                <span class="step-number">4</span>
-                <div>
-                  <h5>Train Model</h5>
-                  <p>
-                    Use MobileNetV2:
-                    <code>tensorflow.keras.applications.MobileNetV2</code><br />
-                    Train for 10–20 epochs
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div class="step-card">
-              <div class="d-flex align-items-start">
-                <span class="step-number">5</span>
-                <div>
-                  <h5>Evaluate Model</h5>
-                  <p>
-                    Test for 80%+ accuracy<br />
-                    Use confusion matrix:
-                    <code>sklearn.metrics.confusion_matrix</code><br />
-                    Save model: <code>model.save('plant_identifier.h5')</code>
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div class="step-card">
-              <div class="d-flex align-items-start">
-                <span class="step-number">6</span>
-                <div>
-                  <h5>Build UI</h5>
-                  <p>
-                    Create Flask app: <code>app.py</code><br />
-                    Display species and confidence scores
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div class="step-card">
-              <div class="d-flex align-items-start">
-                <span class="step-number">7</span>
-                <div>
-                  <h5>Test and Debug</h5>
-                  <p>
-                    Test with diverse images<br />
-                    Optimize with quantization
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div class="step-card">
-              <div class="d-flex align-items-start">
-                <span class="step-number">8</span>
-                <div>
-                  <h5>Deploy</h5>
-                  <p>
-                    Deploy on Heroku: <code>heroku create</code><br />
-                    Optionally, use TensorFlow Lite for mobile
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div class="step-card">
-              <div class="d-flex align-items-start">
-                <span class="step-number">9</span>
-                <div>
-                  <h5>Document and Present</h5>
-                  <p>
-                    Write comprehensive report<br />
-                    Create demo presentation<br />
-                    Share on GitHub with documentation
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="section" id="prerequisites">
-            <h2>Prerequisites</h2>
-            <div class="row">
-              <div class="col-md-6">
-                <h5>🖥️ Hardware Requirements</h5>
-                <ul>
-                  <li>8GB+ RAM minimum</li>
-                  <li>CPU (GPU optional but recommended)</li>
-                  <li>Stable internet connection</li>
-                  <li>At least 5GB free storage</li>
-                </ul>
-              </div>
-              <div class="col-md-6">
-                <h5>💾 Software Requirements</h5>
-                <ul>
-                  <li>Python 3.8+ installed</li>
-                  <li>Git for version control</li>
-                  <li>Code editor (VS Code recommended)</li>
-                  <li>Web browser for testing</li>
-                </ul>
-              </div>
-            </div>
-            <div class="highlight-box mt-3">
-              <h5>📚 Dataset Sources</h5>
-              <p>
-                Labeled plant images from PlantNet, Kaggle, or similar botanical
-                datasets. Start with at least 500 images across 5-10 common
-                plant species.
-              </p>
-            </div>
-          </div>
-
-          <div class="section" id="courses">
-            <h2>Recommended Courses</h2>
-            <div class="timeline-item">
-              <h5>1. Python for Everybody (Coursera)</h5>
-              <p>
-                Master Python basics - variables, functions, and data structures
-              </p>
+            <div class="flex space-x-4">
               <a
-                href="https://www.coursera.org/specializations/python"
-                class="btn btn-sm btn-custom"
-                >View Course</a
+                href="#"
+                class="bg-blue-600 p-3 rounded-full hover:bg-blue-700 transition-colors"
               >
-            </div>
-            <div class="timeline-item">
-              <h5>2. Machine Learning by Andrew Ng (Coursera)</h5>
-              <p>Understanding classification algorithms and fundamentals</p>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  class="w-5 h-5 text-white"
+                >
+                  <path
+                    d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"
+                  />
+                </svg>
+              </a>
               <a
-                href="https://www.coursera.org/learn/machine-learning"
-                class="btn btn-sm btn-custom"
-                >View Course</a
+                href="#"
+                class="bg-green-600 p-3 rounded-full hover:bg-green-700 transition-colors"
               >
-            </div>
-            <div class="timeline-item">
-              <h5>3. Deep Learning Specialization - CNNs (Coursera)</h5>
-              <p>Computer vision, CNNs, and transfer learning techniques</p>
-              <a
-                href="https://www.coursera.org/specializations/deep-learning"
-                class="btn btn-sm btn-custom"
-                >View Course</a
-              >
-            </div>
-            <div class="timeline-item">
-              <h5>4. Python and Flask Bootcamp (Udemy)</h5>
-              <p>Web application development and deployment</p>
-              <a
-                href="https://www.udemy.com/course/python-and-flask-bootcamp/"
-                class="btn btn-sm btn-custom"
-                >View Course</a
-              >
-            </div>
-            <div class="timeline-item">
-              <h5>5. TensorFlow Developer Certificate (Coursera)</h5>
-              <p>Advanced TensorFlow skills for production applications</p>
-              <a
-                href="https://www.coursera.org/professional-certificates/tensorflow-in-practice"
-                class="btn btn-sm btn-custom"
-                >View Course</a
-              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  class="w-5 h-5 text-white"
+                >
+                  <path
+                    d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"
+                  />
+                </svg>
+              </a>
             </div>
           </div>
-
-          <div class="section" id="knowledge">
-            <h2>Minimum Knowledge Required</h2>
-            <div class="row">
-              <div class="col-md-6">
-                <div class="feature-card">
-                  <div class="feature-icon">🐍</div>
-                  <h5>Programming</h5>
-                  <p>
-                    Python basics including variables, functions, loops, and
-                    basic data structures
-                  </p>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="feature-card">
-                  <div class="feature-icon">🤖</div>
-                  <h5>Machine Learning</h5>
-                  <p>
-                    Understanding of supervised learning and classification
-                    concepts
-                  </p>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="feature-card">
-                  <div class="feature-icon">👁️</div>
-                  <h5>Computer Vision</h5>
-                  <p>Basic image processing concepts and CNN fundamentals</p>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="feature-card">
-                  <div class="feature-icon">🌐</div>
-                  <h5>Web Development</h5>
-                  <p>Basic HTML/CSS knowledge and Flask file handling</p>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="feature-card">
-                  <div class="feature-icon">📊</div>
-                  <h5>Mathematics</h5>
-                  <p>Linear algebra basics and fundamental statistics</p>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="feature-card">
-                  <div class="feature-icon">⚙️</div>
-                  <h5>Tools</h5>
-                  <p>Command line basics and Git version control</p>
-                </div>
-              </div>
-            </div>
+          <div>
+            <h4 class="text-lg font-semibold mb-6 text-gray-900">
+              Quick Links
+            </h4>
+            <ul class="space-y-3 text-gray-700">
+              <li>
+                <a href="#" class="hover:text-purple-600 transition-colors"
+                  >About Us</a
+                >
+              </li>
+              <li>
+                <a href="#" class="hover:text-purple-600 transition-colors"
+                  >How It Works</a
+                >
+              </li>
+              <li>
+                <a href="#plans" class="hover:text-purple-600 transition-colors"
+                  >Pricing</a
+                >
+              </li>
+              <li>
+                <a href="#" class="hover:text-purple-600 transition-colors"
+                  >Support</a
+                >
+              </li>
+            </ul>
           </div>
-
-          <div class="section" id="faqs">
-            <h2>Frequently Asked Questions</h2>
-            <div class="accordion" id="faqAccordion">
-              <div class="accordion-item">
-                <h3 class="accordion-header">
-                  <button
-                    class="accordion-button collapsed"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#faq1"
-                  >
-                    <i class="fas fa-question-circle me-2"></i>What is the Plant
-                    Identifier?
-                  </button>
-                </h3>
-                <div
-                  id="faq1"
-                  class="accordion-collapse collapse"
-                  data-bs-parent="#faqAccordion"
+          <div>
+            <h4 class="text-lg font-semibold mb-6 text-gray-900">
+              Contact Info
+            </h4>
+            <div class="space-y-4 text-gray-700">
+              <div class="flex items-center">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  class="w-5 h-5 mr-3 text-purple-600"
                 >
-                  <div class="accordion-body">
-                    An AI-powered application that identifies plant species from
-                    images using a Convolutional Neural Network (CNN). It
-                    combines computer vision with machine learning to provide
-                    accurate plant identification with confidence scores.
-                  </div>
-                </div>
+                  <path
+                    d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"
+                  />
+                </svg>
+                <span>+91-XXXXXXXXXX</span>
               </div>
-              <div class="accordion-item">
-                <h3 class="accordion-header">
-                  <button
-                    class="accordion-button collapsed"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#faq2"
-                  >
-                    <i class="fas fa-desktop me-2"></i>Do I need a GPU for this
-                    project?
-                  </button>
-                </h3>
-                <div
-                  id="faq2"
-                  class="accordion-collapse collapse"
-                  data-bs-parent="#faqAccordion"
+              <div class="flex items-center">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  class="w-5 h-5 mr-3 text-purple-600"
                 >
-                  <div class="accordion-body">
-                    No, a CPU works fine for this project, but a GPU
-                    significantly speeds up training. You can use free GPU
-                    resources like Google Colab or Kaggle Notebooks for faster
-                    model training.
-                  </div>
-                </div>
+                  <path
+                    d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"
+                  />
+                </svg>
+                <span>support@thestudentai.in</span>
               </div>
-              <div class="accordion-item">
-                <h3 class="accordion-header">
-                  <button
-                    class="accordion-button collapsed"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#faq3"
-                  >
-                    <i class="fas fa-clock me-2"></i>How long does it take to
-                    complete?
-                  </button>
-                </h3>
-                <div
-                  id="faq3"
-                  class="accordion-collapse collapse"
-                  data-bs-parent="#faqAccordion"
+              <div class="flex items-center">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  class="w-5 h-5 mr-3 text-purple-600"
                 >
-                  <div class="accordion-body">
-                    The project typically takes 6-8 weeks working 5-10 hours per
-                    week. Beginners may need 8 weeks, while experienced
-                    developers can complete it in 4-6 weeks.
-                  </div>
-                </div>
-              </div>
-              <div class="accordion-item">
-                <h3 class="accordion-header">
-                  <button
-                    class="accordion-button collapsed"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#faq4"
-                  >
-                    <i class="fas fa-database me-2"></i>Where can I get plant
-                    image datasets?
-                  </button>
-                </h3>
-                <div
-                  id="faq4"
-                  class="accordion-collapse collapse"
-                  data-bs-parent="#faqAccordion"
-                >
-                  <div class="accordion-body">
-                    Popular sources include PlantNet, Kaggle plant datasets,
-                    iNaturalist, and PlantCLEF. Start with at least 500 images
-                    across 5-10 common plant species for better model
-                    performance.
-                  </div>
-                </div>
-              </div>
-              <div class="accordion-item">
-                <h3 class="accordion-header">
-                  <button
-                    class="accordion-button collapsed"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#faq5"
-                  >
-                    <i class="fas fa-chart-line me-2"></i>What accuracy can I
-                    expect?
-                  </button>
-                </h3>
-                <div
-                  id="faq5"
-                  class="accordion-collapse collapse"
-                  data-bs-parent="#faqAccordion"
-                >
-                  <div class="accordion-body">
-                    With proper preprocessing and MobileNetV2 transfer learning,
-                    you can achieve 80-90% accuracy. The exact accuracy depends
-                    on dataset quality, number of classes, and training
-                    parameters.
-                  </div>
-                </div>
-              </div>
-              <div class="accordion-item">
-                <h3 class="accordion-header">
-                  <button
-                    class="accordion-button collapsed"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#faq6"
-                  >
-                    <i class="fas fa-mobile-alt me-2"></i>Can I deploy this as a
-                    mobile app?
-                  </button>
-                </h3>
-                <div
-                  id="faq6"
-                  class="accordion-collapse collapse"
-                  data-bs-parent="#faqAccordion"
-                >
-                  <div class="accordion-body">
-                    Yes! You can convert your model to TensorFlow Lite and
-                    integrate it into Android/iOS apps, or create a Progressive
-                    Web App (PWA) for mobile-friendly web access.
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="section" id="milestones">
-            <h2>Project Milestones</h2>
-            <div class="timeline-item">
-              <h5>📅 Week 1-2: Setup and Data Collection</h5>
-              <p>
-                Install all required libraries, set up development environment,
-                and source 500+ high-quality plant images from reliable
-                datasets.
-              </p>
-              <div class="mt-2">
-                <span class="progress-badge badge-not-started"
-                  >Setup Phase</span
-                >
-              </div>
-            </div>
-            <div class="timeline-item">
-              <h5>📅 Week 3: Data Preprocessing</h5>
-              <p>
-                Resize images to standard dimensions, apply data augmentation
-                techniques, and split dataset into training, validation, and
-                test sets.
-              </p>
-              <div class="mt-2">
-                <span class="progress-badge badge-not-started">Data Phase</span>
-              </div>
-            </div>
-            <div class="timeline-item">
-              <h5>📅 Week 4-5: Model Training</h5>
-              <p>
-                Implement MobileNetV2 transfer learning, train the model, and
-                achieve target accuracy of 80%+ through hyperparameter tuning.
-              </p>
-              <div class="mt-2">
-                <span class="progress-badge badge-not-started"
-                  >Training Phase</span
-                >
-              </div>
-            </div>
-            <div class="timeline-item">
-              <h5>📅 Week 6: UI Development</h5>
-              <p>
-                Build Flask web application with image upload functionality,
-                prediction display, and confidence scoring interface.
-              </p>
-              <div class="mt-2">
-                <span class="progress-badge badge-not-started"
-                  >Development Phase</span
-                >
-              </div>
-            </div>
-            <div class="timeline-item">
-              <h5>📅 Week 7: Testing and Debugging</h5>
-              <p>
-                Comprehensive testing with diverse plant images, performance
-                optimization, and bug fixes for production readiness.
-              </p>
-              <div class="mt-2">
-                <span class="progress-badge badge-not-started"
-                  >Testing Phase</span
-                >
-              </div>
-            </div>
-            <div class="timeline-item">
-              <h5>📅 Week 8: Deployment and Documentation</h5>
-              <p>
-                Deploy application to cloud platform, write comprehensive
-                documentation, and create presentation materials.
-              </p>
-              <div class="mt-2">
-                <span class="progress-badge badge-not-started"
-                  >Deployment Phase</span
-                >
-              </div>
-            </div>
-          </div>
-
-          <div class="section" id="timeline">
-            <h2>Timeline Overview</h2>
-            <div class="highlight-box">
-              <h4>⏰ Total Duration: 6–8 weeks (5–10 hours/week)</h4>
-              <div class="row mt-3">
-                <div class="col-md-4">
-                  <div class="feature-card">
-                    <div class="feature-icon">🌱</div>
-                    <h5>Beginners</h5>
-                    <p>
-                      <strong>8 weeks</strong><br />Need time to learn Python/ML
-                      fundamentals
-                    </p>
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="feature-card">
-                    <div class="feature-icon">🌿</div>
-                    <h5>Intermediate</h5>
-                    <p>
-                      <strong>6-7 weeks</strong><br />Know programming basics,
-                      learning AI
-                    </p>
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="feature-card">
-                    <div class="feature-icon">🌳</div>
-                    <h5>Advanced</h5>
-                    <p>
-                      <strong>4-6 weeks</strong><br />Skip learning phase, focus
-                      on implementation
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="section" id="tracking">
-            <h2>Progress Tracking Template</h2>
-            <div class="table-responsive">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th><i class="fas fa-flag me-2"></i>Milestone</th>
-                    <th><i class="fas fa-tasks me-2"></i>Key Tasks</th>
-                    <th><i class="fas fa-info-circle me-2"></i>Status</th>
-                    <th><i class="fas fa-calendar-alt me-2"></i>Start Date</th>
-                    <th><i class="fas fa-calendar-check me-2"></i>End Date</th>
-                    <th><i class="fas fa-sticky-note me-2"></i>Notes</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><strong>Setup and Data Collection</strong></td>
-                    <td>Install libraries, source dataset</td>
-                    <td>
-                      <span class="progress-badge badge-not-started"
-                        >Not Started</span
-                      >
-                    </td>
-                    <td>
-                      <input type="date" class="form-control form-control-sm" />
-                    </td>
-                    <td>
-                      <input type="date" class="form-control form-control-sm" />
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        class="form-control form-control-sm"
-                        placeholder="Add notes..."
-                      />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><strong>Data Preprocessing</strong></td>
-                    <td>Resize, augment, split dataset</td>
-                    <td>
-                      <span class="progress-badge badge-not-started"
-                        >Not Started</span
-                      >
-                    </td>
-                    <td>
-                      <input type="date" class="form-control form-control-sm" />
-                    </td>
-                    <td>
-                      <input type="date" class="form-control form-control-sm" />
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        class="form-control form-control-sm"
-                        placeholder="Add notes..."
-                      />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><strong>Model Training</strong></td>
-                    <td>Train model, hyperparameter tuning</td>
-                    <td>
-                      <span class="progress-badge badge-not-started"
-                        >Not Started</span
-                      >
-                    </td>
-                    <td>
-                      <input type="date" class="form-control form-control-sm" />
-                    </td>
-                    <td>
-                      <input type="date" class="form-control form-control-sm" />
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        class="form-control form-control-sm"
-                        placeholder="Add notes..."
-                      />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><strong>UI Development</strong></td>
-                    <td>Build Flask web application</td>
-                    <td>
-                      <span class="progress-badge badge-not-started"
-                        >Not Started</span
-                      >
-                    </td>
-                    <td>
-                      <input type="date" class="form-control form-control-sm" />
-                    </td>
-                    <td>
-                      <input type="date" class="form-control form-control-sm" />
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        class="form-control form-control-sm"
-                        placeholder="Add notes..."
-                      />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><strong>Testing and Debugging</strong></td>
-                    <td>Test model and UI thoroughly</td>
-                    <td>
-                      <span class="progress-badge badge-not-started"
-                        >Not Started</span
-                      >
-                    </td>
-                    <td>
-                      <input type="date" class="form-control form-control-sm" />
-                    </td>
-                    <td>
-                      <input type="date" class="form-control form-control-sm" />
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        class="form-control form-control-sm"
-                        placeholder="Add notes..."
-                      />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><strong>Deployment and Documentation</strong></td>
-                    <td>Deploy app, write comprehensive report</td>
-                    <td>
-                      <span class="progress-badge badge-not-started"
-                        >Not Started</span
-                      >
-                    </td>
-                    <td>
-                      <input type="date" class="form-control form-control-sm" />
-                    </td>
-                    <td>
-                      <input type="date" class="form-control form-control-sm" />
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        class="form-control form-control-sm"
-                        placeholder="Add notes..."
-                      />
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <div class="section" id="tips">
-            <h2>Pro Tips for Fast Completion</h2>
-            <div class="row">
-              <div class="col-md-6">
-                <div class="feature-card">
-                  <div class="feature-icon">⚡</div>
-                  <h5>Quick Start Tips</h5>
-                  <ul class="text-start">
-                    <li>Use MobileNetV2 for faster training</li>
-                    <li>Start with small dataset (500 images)</li>
-                    <li>Use Google Colab for free GPUs</li>
-                    <li>Leverage Flask templates for UI</li>
-                    <li>Automate preprocessing with scripts</li>
-                  </ul>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="feature-card">
-                  <div class="feature-icon">🎯</div>
-                  <h5>Efficiency Hacks</h5>
-                  <ul class="text-start">
-                    <li>Test model early to catch issues</li>
-                    <li>Follow TensorFlow official tutorials</li>
-                    <li>Collaborate to divide tasks</li>
-                    <li>Document progress incrementally</li>
-                    <li>Use Git for version control</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-
-            <div class="highlight-box mt-4">
-              <h4>🚀 Success Checklist</h4>
-              <div class="row">
-                <div class="col-md-4">
-                  <h6>Before You Start:</h6>
-                  <ul>
-                    <li>✅ Python 3.8+ installed</li>
-                    <li>✅ Virtual environment ready</li>
-                    <li>✅ Dataset sources identified</li>
-                    <li>✅ Development plan created</li>
-                  </ul>
-                </div>
-                <div class="col-md-4">
-                  <h6>During Development:</h6>
-                  <ul>
-                    <li>✅ Regular code commits</li>
-                    <li>✅ Test frequently</li>
-                    <li>✅ Monitor model performance</li>
-                    <li>✅ Document challenges</li>
-                  </ul>
-                </div>
-                <div class="col-md-4">
-                  <h6>Before Deployment:</h6>
-                  <ul>
-                    <li>✅ 80%+ model accuracy</li>
-                    <li>✅ Working web interface</li>
-                    <li>✅ Comprehensive testing</li>
-                    <li>✅ Documentation complete</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Footer -->
-          <div class="section">
-            <div class="text-center">
-              <h3>🌟 Ready to Start Your Plant Identifier Journey?</h3>
-              <p class="lead">
-                Transform your AI skills with this hands-on project that
-                combines computer vision, machine learning, and web development.
-              </p>
-              <button class="btn btn-custom btn-lg me-3">
-                <i class="fas fa-download me-2"></i>Download Project Template
-              </button>
-              <button class="btn btn-outline-success btn-lg">
-                <i class="fas fa-github me-2"></i>View on GitHub
-              </button>
-
-              <div class="mt-4">
-                <p class="text-muted">
-                  <i class="fas fa-heart text-danger me-2"></i>
-                  Created with love for the AI learning community
-                </p>
+                  <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span>30-Day Money Back</span>
               </div>
             </div>
           </div>
         </div>
-      </main>
-    </div>
+        <div class="border-t border-gray-300 pt-8 text-center">
+          <p class="text-gray-600">
+            © 2024 Student AI. All rights reserved. | www.thestudentai.in
+          </p>
+        </div>
+      </div>
+    </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-      // Smooth scrolling for navigation links
-      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-        anchor.addEventListener("click", function (e) {
-          e.preventDefault();
-          const target = document.querySelector(this.getAttribute("href"));
-          if (target) {
-            target.scrollIntoView({
-              behavior: "smooth",
-              block: "start",
-            });
-          }
-        });
-      });
+      function toggleFaq(id) {
+        const faqContent = document.getElementById(`faq-${id}`);
+        const faqIcon = document.getElementById(`faq-icon-${id}`);
 
-      // Highlight active navigation item
-      window.addEventListener("scroll", () => {
-        let current = "";
-        const sections = document.querySelectorAll(".section");
-
-        sections.forEach((section) => {
-          const sectionTop = section.offsetTop;
-          const sectionHeight = section.clientHeight;
-          if (scrollY >= sectionTop - 200) {
-            current = section.getAttribute("id");
-          }
-        });
-
-        document.querySelectorAll(".nav-link").forEach((link) => {
-          link.classList.remove("active");
-          if (link.getAttribute("href") === `#${current}`) {
-            link.classList.add("active");
-          }
-        });
-      });
-
-      // Add click handlers for progress badges
-      document.querySelectorAll(".progress-badge").forEach((badge) => {
-        badge.addEventListener("click", function () {
-          const currentClass = this.className;
-          if (currentClass.includes("badge-not-started")) {
-            this.className = "progress-badge badge-in-progress";
-            this.textContent = "In Progress";
-          } else if (currentClass.includes("badge-in-progress")) {
-            this.className = "progress-badge badge-completed";
-            this.textContent = "Completed";
-          } else {
-            this.className = "progress-badge badge-not-started";
-            this.textContent = "Not Started";
-          }
-        });
-      });
-
-      // Add animation on scroll
-      const observerOptions = {
-        threshold: 0.1,
-        rootMargin: "0px 0px -50px 0px",
-      };
-
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.style.opacity = "1";
-            entry.target.style.transform = "translateY(0)";
-          }
-        });
-      }, observerOptions);
-
-      document.querySelectorAll(".section").forEach((section) => {
-        section.style.opacity = "0";
-        section.style.transform = "translateY(20px)";
-        section.style.transition = "opacity 0.6s ease, transform 0.6s ease";
-        observer.observe(section);
-      });
+        if (faqContent.classList.contains("hidden")) {
+          faqContent.classList.remove("hidden");
+          faqIcon.innerHTML =
+            '<path d="M12 8.7l6 6-1.41 1.41L12 11.52l-4.59 4.58L6 14.7z"/>';
+        } else {
+          faqContent.classList.add("hidden");
+          faqIcon.innerHTML =
+            '<path d="M12 15.5l-6-6 1.41-1.41L11 12.67l3.59-3.58L14.59 8l6 6-6 6z"/>';
+        }
+      }
     </script>
   </body>
 </html>
