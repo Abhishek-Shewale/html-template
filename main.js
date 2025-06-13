@@ -315,7 +315,7 @@ function initPricingCards() {
   const pricingData = [
     {
       title: "USB 4 GB",
-      price: "₹499",
+      price: "₹499 Demo Plan",
       oldPrice: "₹799",
       discount: "Save up to 40%",
       gradient: "from-blue-500 to-indigo-600",
