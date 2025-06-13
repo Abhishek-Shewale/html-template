@@ -53,67 +53,65 @@ function initMobileMenu() {
 function initFeatureCards() {
   const featuresData = [
     {
-      icon: "fas fa-robot",
-      gradient: "from-yellow-400 to-orange-500",
-      title: "30+ AI Tools",
-      description: "Solve doubts instantly with comprehensive AI assistance",
+      icon: "fas fa-check-circle",
+
+      title: "Board Aligned",
+      description: "Content mapped to CBSE, ICSE and State Boards",
       visible: true,
     },
     {
+      icon: "fas fa-rocket",
+
+      title: "Instant Homework Helper",
+      description: "Complete assignments faster with AI guidance",
+      visible: false,
+    },
+    {
       icon: "fas fa-calculator",
-      gradient: "from-blue-400 to-indigo-500",
+
       title: "Math Problem Solver",
       description:
         "Step-by-step math solutions with detailed explanations for every problem",
       visible: true,
     },
     {
-      icon: "fas fa-check-circle",
-      gradient: "from-blue-400 to-indigo-500",
-      title: "Board Aligned",
-      description: "Content mapped to CBSE, ICSE and State Boards",
+      icon: "fas fa-robot",
+
+      title: "30+ AI Features",
+      description: "Solve doubts instantly with comprehensive AI assistance",
       visible: true,
     },
     {
-      icon: "fas fa-language",
-      gradient: "from-purple-400 to-pink-500",
-      title: "Bilingual Support",
-      description: "Available in both English and Hindi",
-      visible: false,
-    },
-    {
       icon: "fas fa-book-open",
-      gradient: "from-cyan-400 to-blue-500",
+
       title: "Chapter-Based Learning",
       description: "Structured content organized by chapters and topics",
       visible: false,
     },
     {
-      icon: "fas fa-dumbbell",
-      gradient: "from-red-400 to-pink-500",
-      title: "Practice Exercises",
-      description: "Interactive exercises to reinforce learning concepts",
-      visible: false,
-    },
-    {
       icon: "fas fa-calendar-alt",
-      gradient: "from-teal-400 to-green-500",
+
       title: "Study Planner",
       description: "Smart scheduling to organize your study sessions",
       visible: false,
     },
     {
       icon: "fas fa-question-circle",
-      gradient: "from-indigo-400 to-purple-500",
+
       title: "24x7 Doubt Clarifier",
       description: "Get instant answers to your questions anytime",
       visible: false,
     },
     {
-      icon: "fas fa-rocket",
-      gradient: "from-amber-400 to-orange-500",
-      title: "Instant Homework Helper",
-      description: "Complete assignments faster with AI guidance",
+      icon: "fas fa-dumbbell",
+      title: "Practice Exercises",
+      description: "Interactive exercises to reinforce learning concepts",
+      visible: false,
+    },
+    {
+      icon: "fas fa-language",
+      title: "Bilingual Support",
+      description: "Available in both English and Hindi",
       visible: false,
     },
   ];
@@ -126,10 +124,8 @@ function initFeatureCards() {
             <div class="feature-card group bg-white rounded-3xl p-8 text-center hover:shadow-2xl transition-all duration-500 border border-gray-100 ${
               !feature.visible ? "mobile-hidden" : ""
             }">
-                <div class="icon-container bg-gradient-to-r ${
-                  feature.gradient
-                } p-6 rounded-2xl w-20 h-20 flex items-center justify-center mx-auto mb-6">
-                    <i class="${feature.icon} text-3xl"></i>
+                <div class="icon-container bg-purple-500 p-6 rounded-2xl w-20 h-20 flex items-center justify-center mx-auto mb-6">
+                   <i class="${feature.icon} text-3xl text-white"></i>
                 </div>
                 <h3 class="text-xl font-bold mb-4 text-gray-800">${
                   feature.title
@@ -148,11 +144,10 @@ function initFeatureCards() {
 function initFlipCards() {
   const flipCardsData = [
     {
-      frontTitle: "Save ₹14,500+ Yearly",
-      frontImage:
-        "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=80&h=80&fit=crop&crop=center",
-      frontGradient: "from-green-100 to-emerald-200",
-      frontIconGradient: "from-green-500 to-emerald-600",
+      frontTitle: "Save 200% Yearly",
+      frontImage: "https://img.icons8.com/3d-fluency/94/money-bag.png",
+      frontGradient: "from-green-200 to-green-200", // Same color = solid
+      frontIconGradient: "from-green-500 to-green-500",
       frontFeatures: [
         "One-time payment vs monthly fees",
         "No hidden subscription costs",
@@ -165,10 +160,9 @@ function initFlipCards() {
     },
     {
       frontTitle: "5x Faster Learning",
-      frontImage:
-        "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=80&h=80&fit=crop&crop=center",
-      frontGradient: "from-purple-100 to-pink-200",
-      frontIconGradient: "from-purple-500 to-pink-600",
+      frontImage: "https://img.icons8.com/color/96/rocket.png",
+      frontGradient: "from-purple-200 to-purple-200",
+      frontIconGradient: "from-purple-500 to-purple-500",
       frontFeatures: [
         "Complete homework in 20 minutes",
         "Instant doubt solving",
@@ -181,10 +175,9 @@ function initFlipCards() {
     },
     {
       frontTitle: "Choose Your Style",
-      frontImage:
-        "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=80&h=80&fit=crop&crop=center",
-      frontGradient: "from-yellow-100 to-orange-200",
-      frontIconGradient: "from-yellow-500 to-orange-600",
+      frontImage: "https://img.icons8.com/3d-fluency/94/usb-2.png",
+      frontGradient: "from-yellow-200 to-yellow-200",
+      frontIconGradient: "from-yellow-500 to-yellow-500",
       frontFeatures: [
         "USB works after initial setup",
         "Online: ₹199/month only",
@@ -197,10 +190,9 @@ function initFlipCards() {
     },
     {
       frontTitle: "Stress-Free Family",
-      frontImage:
-        "https://images.unsplash.com/photo-1511895426328-dc8714191300?w=80&h=80&fit=crop&crop=center",
-      frontGradient: "from-blue-100 to-cyan-200",
-      frontIconGradient: "from-blue-500 to-cyan-600",
+      frontImage: "https://img.icons8.com/color/96/family.png",
+      frontGradient: "from-blue-200 to-blue-200",
+      frontIconGradient: "from-blue-500 to-blue-500",
       frontFeatures: [
         "No parent supervision needed",
         "Confident independent learning",
@@ -537,7 +529,7 @@ function initFAQSection() {
     {
       question: "Does this work without internet?",
       answer:
-        "Yes! The USB version runs completely offline on any Windows laptop or desktop. No internet connection required once installed.",
+        "No, internet connection is required for the AI features to work. However, the USB version has some offline content that can be accessed without internet, but the main AI tools need an active internet connection to function properly.",
     },
     {
       question: "What subjects are covered?",
