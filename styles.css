@@ -62,11 +62,48 @@ img {
   background: linear-gradient(135deg, #b721ff, #fbd786);
 }
 
-/* Header Background */
+/* Refined header with lighter overlay for better image visibility */
 .header-bg {
-  background-image: url("https://i.ibb.co/WvPDxbwB/kidba.jpg");
+  background-image: url("/images/banner10.png");
   background-size: cover;
-  background-position: 55% center;
+  background-position: center center; /* Better centering */
+  position: relative;
+}
+
+.header-bg::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.25); /* Lighter overlay - was 0.3 */
+  z-index: 1;
+}
+
+.header-bg > div {
+  position: relative;
+  z-index: 2;
+}
+
+/* Enhanced text shadows for better readability with lighter overlay */
+.header-bg h2,
+.header-bg .text-2xl,
+.header-bg .text-3xl {
+  color: white !important;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7); /* Stronger shadow */
+}
+
+.header-bg .text-xl {
+  color: white !important;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7); /* Stronger shadow */
+}
+
+/* Stats cards text styling */
+.header-bg .stats-grid-2x2 .text-2xl,
+.header-bg .stats-grid-2x2 .text-sm {
+  color: white !important;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8); /* Stronger shadow for stats */
 }
 
 /* Mobile Feature Cards */
