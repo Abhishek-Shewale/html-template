@@ -148,6 +148,7 @@ function initFlipCards() {
       frontImage: "https://img.icons8.com/3d-fluency/94/money-bag.png",
       frontGradient: "from-green-200 to-green-200", // Same color = solid
       frontIconGradient: "from-green-500 to-green-500",
+      checkboxColor: "bg-green-500",
       frontFeatures: [
         "One-time payment vs monthly fees",
         "No hidden subscription costs",
@@ -163,6 +164,7 @@ function initFlipCards() {
       frontImage: "https://img.icons8.com/color/96/rocket.png",
       frontGradient: "from-purple-200 to-purple-200",
       frontIconGradient: "from-purple-500 to-purple-500",
+      checkboxColor: "bg-purple-400",
       frontFeatures: [
         "Complete homework in 20 minutes",
         "Instant doubt solving",
@@ -178,6 +180,7 @@ function initFlipCards() {
       frontImage: "https://img.icons8.com/3d-fluency/94/usb-2.png",
       frontGradient: "from-yellow-200 to-yellow-200",
       frontIconGradient: "from-yellow-500 to-yellow-500",
+      checkboxColor: "bg-yellow-500",
       frontFeatures: [
         "USB works after initial setup",
         "Online: ₹199/month only",
@@ -193,6 +196,7 @@ function initFlipCards() {
       frontImage: "https://img.icons8.com/color/96/family.png",
       frontGradient: "from-blue-200 to-blue-200",
       frontIconGradient: "from-blue-500 to-blue-500",
+      checkboxColor: "bg-blue-500",
       frontFeatures: [
         "No parent supervision needed",
         "Confident independent learning",
@@ -230,11 +234,11 @@ function initFlipCards() {
                               .map(
                                 (feature) => `
                                 <li class="flex items-center">
-                                    <div class="bg-green-500 rounded-full p-1 mr-3">
-                                        <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                            <path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
-                                        </svg>
-                                    </div>
+                                    <div class="${card.checkboxColor} rounded-full p-1 mr-3 shadow-md">
+    <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+    </svg>
+</div>
                                     ${feature}
                                 </li>
                             `
@@ -297,8 +301,8 @@ function initFlipCardAnimations() {
             card.classList.add("flipped");
             setTimeout(() => {
               card.classList.remove("flipped");
-            }, 1000);
-          }, index * 1500);
+            }, 2000);
+          }, index * 2500);
         });
       }
     });
@@ -315,7 +319,7 @@ function initPricingCards() {
   const pricingData = [
     {
       title: "USB 4 GB",
-      price: "₹499",
+      price: "₹499 Demo Plan",
       oldPrice: "₹799",
       discount: "Save up to 40%",
       gradient: "from-blue-500 to-indigo-600",
@@ -340,7 +344,7 @@ function initPricingCards() {
       price: "₹199",
       oldPrice: null,
       discount: "per month",
-      gradient: "from-green-500 to-emerald-600",
+      gradient: "from-green-500 to-green-600",
       features: ["All AI tools", "Regular updates", "Access from anywhere"],
       popular: false,
     },
