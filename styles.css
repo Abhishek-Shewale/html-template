@@ -64,7 +64,7 @@ img {
 
 /* Refined header with lighter overlay for better image visibility */
 .header-bg {
-  background-image: url("/images/banner10.png");
+  background-image: url("https://i.ibb.co/LhxjDJ1N/banner10.png");
   background-size: cover;
   background-position: center center; /* Better centering */
   position: relative;
