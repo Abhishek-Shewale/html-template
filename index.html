@@ -522,151 +522,356 @@
       </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="py-8 bg-gray-50">
-      <div class="max-w-7xl mx-auto px-4">
+    <!-- Interactive Footer - White Theme -->
+    <footer
+      class="bg-gray-50 border-t border-gray-200 text-gray-800 relative overflow-hidden"
+    >
+      <!-- Subtle Background Pattern -->
+      <div class="absolute inset-0 opacity-5">
+        <div
+          class="absolute top-0 left-0 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl transform -translate-x-32 -translate-y-32"
+        ></div>
+        <div
+          class="absolute top-0 right-0 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl transform translate-x-32 -translate-y-32"
+        ></div>
+        <div
+          class="absolute bottom-0 left-1/2 w-96 h-96 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl transform -translate-x-1/2 translate-y-32"
+        ></div>
+      </div>
+
+      <div class="relative z-10 max-w-7xl mx-auto px-6 py-16">
         <!-- Main Footer Content -->
         <div
-          class="flex flex-col lg:flex-row justify-between items-start gap-8"
+          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12"
         >
-          <!-- Left Side - Company Info -->
-          <div class="flex-1 max-w-lg">
-            <p class="text-gray-800 font-semibold mb-3 text-base">
-              © 2024 Student AI. All copyrights & trademark reserved.
-            </p>
-            <p class="text-gray-700 mb-2 text-sm leading-relaxed">
-              A product by Deployh.ai Technologies Private Limited.
-            </p>
-            <p class="text-gray-700 mb-3 text-sm leading-relaxed">
-              Regd Office: Myytri Square, 2-41-6/11, Miyapur RD, Kondapur,
-              Telangana - 500084.
-            </p>
-            <p class="text-gray-700 mb-2 text-sm">
-              Contact Number:
-              <a
-                href="tel:+917893816795"
-                class="hover:text-purple-600 transition-colors"
-                >+91 7893816795</a
-              >
-            </p>
-            <p class="text-gray-700 text-sm">
-              Support Email:
-              <a
-                href="mailto:studentaisoftware@gmail.com"
-                class="hover:text-purple-600 transition-colors"
-                >studentaisoftware@gmail.com</a
-              >
-            </p>
-          </div>
-
-          <!-- Right Side - Buttons, Links & Social Icons -->
-          <div
-            class="flex flex-col items-start lg:items-end space-y-6 w-full lg:w-auto"
-          >
-            <!-- Program Buttons - Positioned above Refund Policy -->
-            <div
-              class="w-full flex flex-row sm:flex-row gap-3 justify-start lg:justify-start"
-            >
-              <button
-                class="bg-purple-600 hover:bg-purple-700 text-white px-3 sm:px-5 py-2 sm:py-2.5 rounded-lg font-medium transition-colors text-xs sm:text-sm flex items-center justify-center lg:justify-start whitespace-nowrap"
-              >
-                Join Education program
-                <i class="fas fa-arrow-right ml-2"></i>
-              </button>
-              <button
-                class="bg-purple-600 hover:bg-purple-700 text-white px-3 sm:px-5 py-2 sm:py-2.5 rounded-lg font-medium transition-colors text-xs sm:text-sm flex items-center justify-center lg:justify-start whitespace-nowrap"
-              >
-                Join Affiliate program
-                <i class="fas fa-arrow-right ml-2"></i>
-              </button>
+          <!-- Company Info Section -->
+          <div class="lg:col-span-1">
+            <div class="flex items-center mb-6">
+              <div class="bg-purple-600 rounded-2xl p-3 mr-4">
+                <i class="fas fa-graduation-cap text-2xl text-white"></i>
+              </div>
+              <div>
+                <h2 class="text-2xl font-bold text-gray-900">Student AI</h2>
+                <p class="text-sm text-gray-600">
+                  India's First AI-Powered USB
+                </p>
+              </div>
             </div>
+            <p class="text-gray-600 mb-6 leading-relaxed">
+              Transform your child's learning journey with AI-powered education
+              tools. Join 300+ happy families today!
+            </p>
 
-            <!-- Footer Links - Starting with Refund Policy -->
-            <div
-              class="w-full flex flex-wrap justify-start lg:justify-end gap-x-6 gap-y-2 text-sm"
-            >
-              <a
-                href="https://thestudentai.in/refundpolicy.html"
-                class="text-gray-600 hover:text-purple-600 transition-colors whitespace-nowrap"
-              >
-                Refund Policy
-              </a>
-              <a
-                href="https://thestudentai.in/privacypolicy.html"
-                class="text-gray-600 hover:text-purple-600 transition-colors whitespace-nowrap"
-              >
-                Privacy Policy
-              </a>
-              <a
-                href="https://thestudentai.in/termsandconditions.html"
-                class="text-gray-600 hover:text-purple-600 transition-colors whitespace-nowrap"
-              >
-                Terms and Condition
-              </a>
-              <a
-                href="#"
-                class="text-gray-600 hover:text-purple-600 transition-colors"
-              >
-                Contact
-              </a>
-              <a
-                href="https://thestudentai.in/aboutus.html"
-                class="text-gray-600 hover:text-purple-600 transition-colors whitespace-nowrap"
-              >
-                About us
-              </a>
-            </div>
-
-            <!-- Social Media Icons - Aligned with links -->
-            <div
-              class="w-full flex justify-start lg:justify-start gap-10 space-x-5"
-            >
-              <!-- Amazon -->
+            <!-- Social Media Icons -->
+            <div class="flex space-x-4">
               <a
                 href="https://www.amazon.in/dp/B0DL31J11R"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="text-gray-500 hover:text-orange-600 transition-colors text-xl"
-                title="View on Amazon"
+                class="group bg-white border-2 border-gray-200 hover:border-orange-500 p-3 rounded-xl hover:shadow-lg hover:scale-110 hover:-translate-y-1 transition-all duration-300"
               >
-                <i class="fab fa-amazon"></i>
+                <i
+                  class="fab fa-amazon text-xl text-orange-500 group-hover:text-orange-600"
+                ></i>
               </a>
-
-              <!-- LinkedIn -->
-              <a
-                href="#"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="text-gray-500 hover:text-blue-700 transition-colors text-xl"
-                title="Follow on LinkedIn"
-              >
-                <i class="fab fa-linkedin"></i>
-              </a>
-
-              <!-- WhatsApp -->
               <a
                 href="https://wa.me/917893816795"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="text-gray-500 hover:text-green-600 transition-colors text-xl"
-                title="Contact on WhatsApp"
+                class="group bg-white border-2 border-gray-200 hover:border-green-500 p-3 rounded-xl hover:shadow-lg hover:scale-110 hover:-translate-y-1 transition-all duration-300"
               >
-                <i class="fab fa-whatsapp"></i>
+                <i
+                  class="fab fa-whatsapp text-xl text-green-500 group-hover:text-green-600"
+                ></i>
               </a>
-
-              <!-- Instagram -->
               <a
                 href="#"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="text-gray-500 hover:text-pink-600 transition-colors text-xl"
-                title="Follow on Instagram"
+                class="group bg-white border-2 border-gray-200 hover:border-blue-500 p-3 rounded-xl hover:shadow-lg hover:scale-110 hover:-translate-y-1 transition-all duration-300"
               >
-                <i class="fab fa-instagram"></i>
+                <i
+                  class="fab fa-linkedin text-xl text-blue-500 group-hover:text-blue-600"
+                ></i>
               </a>
+              <a
+                href="#"
+                class="group bg-white border-2 border-gray-200 hover:border-pink-500 p-3 rounded-xl hover:shadow-lg hover:scale-110 hover:-translate-y-1 transition-all duration-300"
+              >
+                <i
+                  class="fab fa-instagram text-xl text-pink-500 group-hover:text-pink-600"
+                ></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Quick Links -->
+          <div>
+            <h3 class="text-xl font-bold mb-6 flex items-center text-gray-900">
+              <i class="fas fa-link text-purple-600 mr-2"></i>
+              Quick Links
+            </h3>
+            <ul class="space-y-3">
+              <li>
+                <a
+                  href="https://app.thestudentai.in/"
+                  class="text-gray-600 hover:text-purple-600 hover:translate-x-2 transition-all duration-300 flex items-center group"
+                >
+                  <i
+                    class="fas fa-chevron-right text-xs mr-2 group-hover:text-purple-600"
+                  ></i>
+                  Pro-User Login
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://trial.thestudentai.in/"
+                  class="text-gray-600 hover:text-purple-600 hover:translate-x-2 transition-all duration-300 flex items-center group"
+                >
+                  <i
+                    class="fas fa-chevron-right text-xs mr-2 group-hover:text-purple-600"
+                  ></i>
+                  Free Trial
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://thestudentai.in/aboutus.html"
+                  class="text-gray-600 hover:text-purple-600 hover:translate-x-2 transition-all duration-300 flex items-center group"
+                >
+                  <i
+                    class="fas fa-chevron-right text-xs mr-2 group-hover:text-purple-600"
+                  ></i>
+                  About Us
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-600 hover:text-purple-600 hover:translate-x-2 transition-all duration-300 flex items-center group"
+                >
+                  <i
+                    class="fas fa-chevron-right text-xs mr-2 group-hover:text-purple-600"
+                  ></i>
+                  Features
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#plans"
+                  class="text-gray-600 hover:text-purple-600 hover:translate-x-2 transition-all duration-300 flex items-center group"
+                >
+                  <i
+                    class="fas fa-chevron-right text-xs mr-2 group-hover:text-purple-600"
+                  ></i>
+                  Pricing Plans
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Legal & Support -->
+          <div>
+            <h3 class="text-xl font-bold mb-6 flex items-center text-gray-900">
+              <i class="fas fa-shield-alt text-purple-600 mr-2"></i>
+              Legal & Support
+            </h3>
+            <ul class="space-y-3">
+              <li>
+                <a
+                  href="https://thestudentai.in/refundpolicy.html"
+                  class="text-gray-600 hover:text-purple-600 hover:translate-x-2 transition-all duration-300 flex items-center group"
+                >
+                  <i
+                    class="fas fa-chevron-right text-xs mr-2 group-hover:text-purple-600"
+                  ></i>
+                  Refund Policy
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://thestudentai.in/privacypolicy.html"
+                  class="text-gray-600 hover:text-purple-600 hover:translate-x-2 transition-all duration-300 flex items-center group"
+                >
+                  <i
+                    class="fas fa-chevron-right text-xs mr-2 group-hover:text-purple-600"
+                  ></i>
+                  Privacy Policy
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://thestudentai.in/termsandconditions.html"
+                  class="text-gray-600 hover:text-purple-600 hover:translate-x-2 transition-all duration-300 flex items-center group"
+                >
+                  <i
+                    class="fas fa-chevron-right text-xs mr-2 group-hover:text-purple-600"
+                  ></i>
+                  Terms & Conditions
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-600 hover:text-purple-600 hover:translate-x-2 transition-all duration-300 flex items-center group"
+                >
+                  <i
+                    class="fas fa-chevron-right text-xs mr-2 group-hover:text-purple-600"
+                  ></i>
+                  Contact Support
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-600 hover:text-purple-600 hover:translate-x-2 transition-all duration-300 flex items-center group"
+                >
+                  <i
+                    class="fas fa-chevron-right text-xs mr-2 group-hover:text-purple-600"
+                  ></i>
+                  Help Center
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- WhatsApp Updates & Programs -->
+          <div>
+            <h3 class="text-xl font-bold mb-6 flex items-center text-gray-900">
+              <i class="fab fa-whatsapp text-green-600 mr-2"></i>
+              Stay Connected
+            </h3>
+
+            <!-- WhatsApp Updates -->
+            <div class="mb-8">
+              <p class="text-gray-600 mb-4 text-sm">
+                Get latest updates and exclusive offers on WhatsApp!
+              </p>
+              <div class="flex flex-col space-y-3">
+                <input
+                  type="tel"
+                  id="whatsappNumber"
+                  placeholder="Enter your WhatsApp number"
+                  class="bg-white border-2 border-gray-200 focus:border-green-500 rounded-lg px-4 py-3 text-gray-800 placeholder-gray-400 focus:outline-none transition-all duration-300"
+                />
+                <button
+                  id="connectWhatsApp"
+                  class="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold px-6 py-3 rounded-lg hover:scale-105 hover:shadow-lg transition-all duration-300 flex items-center justify-center"
+                >
+                  <i class="fab fa-whatsapp mr-2"></i>
+                  Connect on WhatsApp
+                </button>
+              </div>
+            </div>
+
+            <!-- Program Buttons -->
+            <div class="space-y-3">
+              <button
+                class="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-semibold px-4 py-3 rounded-lg hover:scale-105 hover:shadow-lg transition-all duration-300 flex items-center justify-center text-sm"
+              >
+                <i class="fas fa-graduation-cap mr-2"></i>
+                Join Education Program
+              </button>
+              <button
+                class="w-full bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white font-semibold px-4 py-3 rounded-lg hover:scale-105 hover:shadow-lg transition-all duration-300 flex items-center justify-center text-sm"
+              >
+                <i class="fas fa-handshake mr-2"></i>
+                Join Affiliate Program
+              </button>
             </div>
           </div>
         </div>
+
+        <!-- Contact Information Bar -->
+        <div
+          class="bg-white border-2 border-gray-200 rounded-2xl p-6 mb-8 shadow-lg"
+        >
+          <div
+            class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center md:text-left"
+          >
+            <div class="flex items-center justify-center md:justify-start">
+              <div class="bg-green-500 rounded-full p-3 mr-4">
+                <i class="fas fa-phone text-white"></i>
+              </div>
+              <div>
+                <h4 class="font-semibold text-gray-900">Call Us</h4>
+                <a
+                  href="tel:+917893816795"
+                  class="text-gray-600 hover:text-purple-600 transition-colors"
+                  >+91 7893816795</a
+                >
+              </div>
+            </div>
+            <div class="flex items-center justify-center md:justify-start">
+              <div class="bg-blue-500 rounded-full p-3 mr-4">
+                <i class="fas fa-envelope text-white"></i>
+              </div>
+              <div>
+                <h4 class="font-semibold text-gray-900">Email Us</h4>
+                <a
+                  href="mailto:studentaisoftware@gmail.com"
+                  class="text-gray-600 hover:text-purple-600 transition-colors text-sm"
+                  >studentaisoftware@gmail.com</a
+                >
+              </div>
+            </div>
+            <div class="flex items-center justify-center md:justify-start">
+              <div class="bg-purple-500 rounded-full p-3 mr-4">
+                <i class="fas fa-map-marker-alt text-white"></i>
+              </div>
+              <div>
+                <h4 class="font-semibold text-gray-900">Location</h4>
+                <p class="text-gray-600 text-sm">Telangana, India</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Section -->
+        <div class="border-t border-gray-300 pt-8">
+          <div
+            class="flex flex-col lg:flex-row justify-between items-center space-y-4 lg:space-y-0"
+          >
+            <!-- Copyright -->
+            <div class="text-center lg:text-left">
+              <p class="text-gray-600 mb-2">
+                © 2024
+                <span class="font-semibold text-purple-600">Student AI</span>.
+                All copyrights & trademark reserved.
+              </p>
+              <p class="text-gray-500 text-sm">
+                A product by
+                <span class="font-semibold"
+                  >Deployh.ai Technologies Private Limited</span
+                >
+              </p>
+              <p class="text-gray-500 text-xs mt-1">
+                Regd Office: Myytri Square, 2-41-6/11, Miyapur RD, Kondapur,
+                Telangana - 500084
+              </p>
+            </div>
+
+            <!-- Stats -->
+            <div class="flex space-x-8 text-center">
+              <div>
+                <div class="text-2xl font-bold text-purple-600">300+</div>
+                <div class="text-gray-600 text-xs">Happy Students</div>
+              </div>
+              <div>
+                <div class="text-2xl font-bold text-purple-600">4.4/5</div>
+                <div class="text-gray-600 text-xs">Rating</div>
+              </div>
+              <div>
+                <div class="text-2xl font-bold text-purple-600">30+</div>
+                <div class="text-gray-600 text-xs">AI Features</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Floating Action Button -->
+      <div class="fixed bottom-6 right-6 z-50">
+        <button
+          id="floatingWhatsApp"
+          class="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white p-4 rounded-full shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300 animate-pulse"
+        >
+          <i class="fab fa-whatsapp text-2xl"></i>
+        </button>
       </div>
     </footer>
 
