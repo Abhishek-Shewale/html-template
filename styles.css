@@ -62,48 +62,73 @@ img {
   background: linear-gradient(135deg, #b721ff, #fbd786);
 }
 
-/* Refined header with lighter overlay for better image visibility */
-.header-bg {
-  background-image: url("https://i.ibb.co/5hzY0PWL/banner16-removebg-preview.jpg");
-  background-size: cover;
-  background-position: center center; /* Better centering */
-  position: relative;
+/* Custom styles for the new layout */
+.header-section {
+  background: white;
+  min-height: 600px;
 }
 
-.header-bg::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.25); /* Lighter overlay - was 0.3 */
-  z-index: 1;
+.stats-grid-2x2 {
+  display: grid;
+  gap: 1.5rem;
 }
 
-.header-bg > div {
-  position: relative;
-  z-index: 2;
+/* Mobile: 2x2 grid */
+@media (max-width: 767px) {
+  .stats-grid-2x2 {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .header-image {
+    order: 1; /* Image comes first on mobile */
+    margin-bottom: 2rem;
+  }
+
+  .header-content {
+    text-align: center;
+  }
 }
 
-/* Enhanced text shadows for better readability with lighter overlay */
-.header-bg h2,
-.header-bg .text-2xl,
-.header-bg .text-3xl {
-  color: white !important;
-  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7); /* Stronger shadow */
+/* Tablet: 2x2 grid */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .stats-grid-2x2 {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
 }
 
-.header-bg .text-xl {
-  color: white !important;
-  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7); /* Stronger shadow */
+/* Desktop: 4 columns */
+@media (min-width: 1024px) {
+  .stats-grid-2x2 {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+  }
 }
 
-/* Stats cards text styling */
-.header-bg .stats-grid-2x2 .text-2xl,
-.header-bg .stats-grid-2x2 .text-sm {
-  color: white !important;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8); /* Stronger shadow for stats */
+.header-image img {
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease;
+}
+
+.header-image img:hover {
+  transform: scale(1.05);
+}
+
+/* Floating animation for image */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.float-animation {
+  animation: float 3s ease-in-out infinite;
 }
 
 /* Mobile Feature Cards */
