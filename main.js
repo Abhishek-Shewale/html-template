@@ -749,6 +749,92 @@ function initSeeMoreButton() {
   }
 }
 
+// WhatsApp connection for updates
+document
+  .getElementById("connectWhatsApp")
+  .addEventListener("click", function () {
+    const phoneNumber = document.getElementById("whatsappNumber").value;
+    if (phoneNumber) {
+      const message = `Hi! I'm interested in Student AI updates and offers. My WhatsApp number is ${phoneNumber}. Please add me to your updates list.`;
+      const whatsappUrl = `https://wa.me/917893816795?text=${encodeURIComponent(
+        message
+      )}`;
+      window.open(whatsappUrl, "_blank");
+      document.getElementById("whatsappNumber").value = "";
+      alert(
+        "Thank you! We will connect with you on WhatsApp for updates and offers."
+      );
+    } else {
+      alert("Please enter your WhatsApp number.");
+    }
+  });
+
+// Floating WhatsApp button
+document
+  .getElementById("floatingWhatsApp")
+  .addEventListener("click", function () {
+    const message = "Hi! I need help with Student AI.";
+    const whatsappUrl = `https://wa.me/917893816795?text=${encodeURIComponent(
+      message
+    )}`;
+    window.open(whatsappUrl, "_blank");
+  });
+
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+  anchor.addEventListener("click", function (e) {
+    e.preventDefault();
+    const target = document.querySelector(this.getAttribute("href"));
+    if (target) {
+      target.scrollIntoView({
+        behavior: "smooth",
+      });
+    }
+  });
+});
+
+// Program buttons functionality
+document.querySelectorAll("button").forEach((button) => {
+  if (button.textContent.includes("Join Education Program")) {
+    button.addEventListener("click", function () {
+      const message =
+        "Hi! I want to join the Student AI Education Program. Please provide more details.";
+      const whatsappUrl = `https://wa.me/917893816795?text=${encodeURIComponent(
+        message
+      )}`;
+      window.open(whatsappUrl, "_blank");
+    });
+  }
+  if (button.textContent.includes("Join Affiliate Program")) {
+    button.addEventListener("click", function () {
+      const message =
+        "Hi! I want to join the Student AI Affiliate Program. Please provide more details.";
+      const whatsappUrl = `https://wa.me/917893816795?text=${encodeURIComponent(
+        message
+      )}`;
+      window.open(whatsappUrl, "_blank");
+    });
+  }
+});
+
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+  anchor.addEventListener("click", function (e) {
+    e.preventDefault();
+    const target = document.querySelector(this.getAttribute("href"));
+    if (target) {
+      target.scrollIntoView({
+        behavior: "smooth",
+      });
+    }
+  });
+});
+
+// WhatsApp floating button
+document.querySelector(".fixed button").addEventListener("click", function () {
+  window.open("https://wa.me/917893816795", "_blank");
+});
+
 // Scroll Animations
 function initScrollAnimations() {
   const observerOptions = {
