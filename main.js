@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Initialize all components
   initMobileMenu();
   initFeatureCards();
+  initFeaturesSmallGallery();
   initFlipCards();
   initPricingCards();
   initReviewCards();
@@ -49,6 +50,50 @@ function initMobileMenu() {
   }
 }
 
+// Add this to your initScrollAnimations function
+const benefitItems = document.querySelectorAll(".benefit-item");
+benefitItems.forEach((item, index) => {
+  item.style.opacity = "0";
+  item.style.transform = "translateY(20px)";
+
+  setTimeout(() => {
+    item.style.transition = "all 0.6s ease";
+    item.style.opacity = "1";
+    item.style.transform = "translateY(0)";
+  }, index * 200);
+});
+
+function initFeaturesSmallGallery() {
+  const galleryImages = [
+    "https://images.unsplash.com/photo-1675664533677-2f3479b85c20?w=300&h=300&fit=crop&crop=center", // Indian students with laptop
+    "https://images.unsplash.com/photo-1589169011402-8b2cbd1ee593?w=300&h=300&fit=crop&crop=center", // Indian parents 1
+
+    "https://plus.unsplash.com/premium_photo-1663091422892-2ebd4d70be59?w=300&h=300&fit=crop&crop=center", // Indian kids using laptop 1
+    "https://plus.unsplash.com/premium_photo-1681483524067-a76808e16e0b?w=300&h=300&fit=crop&crop=center", // Indian kids using laptop 2
+    "https://images.unsplash.com/photo-1730130596425-197566414dc4?w=300&h=300&fit=crop&crop=center", // Indian parents 2
+
+    "https://plus.unsplash.com/premium_photo-1741753299648-e406db7a6602?w=300&h=300&fit=crop&crop=center", // Indian kids using laptop 3
+  ];
+
+  const featuresSmallGallery = document.getElementById("featuresSmallGallery");
+  if (featuresSmallGallery) {
+    featuresSmallGallery.innerHTML = galleryImages
+      .map(
+        (image, index) => `
+        <div class="overflow-hidden rounded-xl">
+          <img 
+            src="${image}" 
+            alt="Student learning ${index + 1}" 
+            class="w-full aspect-square object-cover transition-all duration-300 hover:scale-105 shadow-md hover:shadow-lg" 
+            loading="lazy" 
+          />
+        </div>
+      `
+      )
+      .join("");
+  }
+}
+
 // Feature Cards Data and Initialization
 function initFeatureCards() {
   const featuresData = [
@@ -56,7 +101,7 @@ function initFeatureCards() {
       icon: "fas fa-check-circle",
 
       title: "Board Aligned",
-      description: "Content mapped to CBSE, ICSE and State Boards",
+      description: "Content mapped to CBSE and State Boards",
       visible: true,
     },
     {
@@ -103,13 +148,13 @@ function initFeatureCards() {
       visible: false,
     },
     {
-      icon: "fas fa-dumbbell",
+      icon: "fas fa-pencil-alt",
       title: "Practice Exercises",
       description: "Interactive exercises to reinforce learning concepts",
       visible: false,
     },
     {
-      icon: "fas fa-language",
+      icon: "fas fa-comments",
       title: "Bilingual Support",
       description: "Available in both English and Hindi",
       visible: false,
@@ -144,21 +189,39 @@ function initFeatureCards() {
 function initFlipCards() {
   const flipCardsData = [
     {
-      frontTitle: "Save 200% Yearly",
+      frontTitle: "Stress-Free Family",
+      frontImage: "https://img.icons8.com/color/96/family.png",
+      frontGradient: "from-blue-200 to-blue-200",
+      frontIconGradient: "from-blue-500 to-blue-500",
+      checkboxColor: "bg-blue-500",
+      frontFeatures: [
+        "No parent supervision needed",
+        "Confident independent learning",
+        "Happy children, happy parents",
+        "Better family relationships",
+      ],
+      backTitle: "Family Benefits",
+      backDescription:
+        "Reduce family stress while improving academic performance and relationships.",
+    },
+
+    {
+      frontTitle: "Compare vs Tuition / Coaching",
       frontImage: "https://img.icons8.com/3d-fluency/94/money-bag.png",
       frontGradient: "from-green-200 to-green-200", // Same color = solid
       frontIconGradient: "from-green-500 to-green-500",
       checkboxColor: "bg-green-500",
       frontFeatures: [
-        "One-time payment vs monthly fees",
-        "No hidden subscription costs",
-        "Perfect for middle-class families",
-        "Money-back guarantee",
+        "Monthly Tuition: ₹2,000–₹5,000+",
+        "Student AI: ₹499 – One Time",
+        "Works 24/7",
+        "Covers all subjects",
       ],
-      backTitle: "Cost Savings Details",
+      backTitle: "Cost Comparison Details",
       backDescription:
-        "Save thousands compared to expensive online platforms with our one-time payment model.",
+        "Traditional tuition costs ₹24,000-₹60,000 annually. Student AI provides comprehensive learning support for just ₹499 one-time payment.",
     },
+
     {
       frontTitle: "5x Faster Learning",
       frontImage: "https://img.icons8.com/color/96/rocket.png",
@@ -191,22 +254,6 @@ function initFlipCards() {
       backDescription:
         "Choose between offline USB or online subscription based on your needs.",
     },
-    {
-      frontTitle: "Stress-Free Family",
-      frontImage: "https://img.icons8.com/color/96/family.png",
-      frontGradient: "from-blue-200 to-blue-200",
-      frontIconGradient: "from-blue-500 to-blue-500",
-      checkboxColor: "bg-blue-500",
-      frontFeatures: [
-        "No parent supervision needed",
-        "Confident independent learning",
-        "Happy children, happy parents",
-        "Better family relationships",
-      ],
-      backTitle: "Family Benefits",
-      backDescription:
-        "Reduce family stress while improving academic performance and relationships.",
-    },
   ];
 
   const flipCardsContainer = document.getElementById("flippingCardsContainer");
@@ -230,20 +277,20 @@ function initFlipCards() {
                             }</h3>
                         </div>
                         <ul class="space-y-3 text-gray-700 flex-grow">
-                            ${card.frontFeatures
-                              .map(
-                                (feature) => `
-                                <li class="flex items-center">
-                                    <div class="${card.checkboxColor} rounded-full p-1 mr-3 shadow-md">
-    <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-    </svg>
-</div>
-                                    ${feature}
-                                </li>
-                            `
-                              )
-                              .join("")}
+                           ${card.frontFeatures
+                             .map(
+                               (feature) => `
+    <li class="flex items-start">
+        <div class="${card.checkboxColor} rounded-full p-1 mr-3 mt-0.5 flex-shrink-0 w-5 h-5 flex items-center justify-center">
+            <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+            </svg>
+        </div>
+        <span class="text-left flex-1">${feature}</span>
+    </li>
+    `
+                             )
+                             .join("")}
                         </ul>
                     </div>
                     <div class="flip-card-back">
@@ -319,7 +366,7 @@ function initPricingCards() {
   const pricingData = [
     {
       title: "USB 4 GB",
-      price: "₹499 Demo Plan",
+      price: "₹499",
       oldPrice: "₹799",
       discount: "Save up to 40%",
       gradient: "from-blue-500 to-indigo-600",
